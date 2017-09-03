@@ -7,7 +7,7 @@ You can write `@SuppressWarnings("NullAway")` on any method, field, or class to 
 ### Downcasting
 
 One can easily write a "downcast" method that takes an argument of `@Nullable` type and returns the same value as `@NonNull`:
-```
+```java
 public static <T> T castToNonNull(@Nullable T x) {
     if (x == null) {
           // YOUR ERROR LOGGING AND REPORTING LOGIC GOES HERE
@@ -19,8 +19,8 @@ In the case where `x` is `null`, `castToNonNull` could throw an NPE for the grea
 
 When would you use `castToNonNull`? Consider the following example, which uses a `Map` and iterates over its `keySet()`:
 
-```
-for(String key : map.keySet()) {
+```java
+for (String key : map.keySet()) {
   // here m.get(key) cannot be null (assuming null values cannot be 
   // stored in the map), but it is @Nullable as far as the checker can tell,
   // as it does not yet reason about keySet()
