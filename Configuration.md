@@ -24,17 +24,7 @@ A list of annotations that cause classes to be excluded from nullability analysi
 
 A list of annotations that cause fields to be excluded from being checked for proper initialization (e.g. `javax.inject.Inject`).
 
+## Library Models
+
 In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the same classpath as the checker itself, and consider those as plug-in models for third-party unannotated libraries. Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for `com.uber.nullaway.LibraryModels` itself.
-
-The `castToNonNull` method does not ship with the NullAway Open-Source release, since its implementation is dependent on whichever logging infrastructure the analyzed code uses. Implementing your own version of this method is both recommended, and trivial:
-
-```
-@SuppressWarnings("CheckNullabilityTypes")
-public static <T> T castToNonNull(@Nullable T x) {
-    if (x == null) {
-          // YOUR ERROR LOGGING AND REPORTING LOGIC GOES HERE
-    }
-    return x;
-}
-```
 
