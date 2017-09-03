@@ -25,5 +25,6 @@ for (String key : map.keySet()) {
   // stored in the map), but it is @Nullable as far as the checker can tell,
   // as it does not yet reason about keySet()
   Object value = castToNonNull(m.get(key));
+  ...
 }
 ```
