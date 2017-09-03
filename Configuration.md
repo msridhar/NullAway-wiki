@@ -1,16 +1,16 @@
-The following are a few notes on setting up NullAway on your own repo (mostly for Open Source).
+## Command-Line Options
 
-The NullAway checker takes multiple configuration flags, in the format of [[ http://errorprone.info/docs/flags | Error Prone's Command-Line Flags ]] . It will throw an error immediately upon loading if it does not receive at least one package for the required `-XepOpt:NullAway:AnnotatedPackages` flag, which tells it which code (and jars) to analyze.
+The NullAway checker takes multiple configuration flags, in the format of [Error Prone's Command-Line Flags](http://errorprone.info/docs/flags). It will throw an error immediately upon loading if the `-XepOpt:NullAway:AnnotatedPackages` flag is not specified.
 
-The following flags are currently supported, each of them can take multiple values as a comma separated list:
+The following flags are currently supported; each of them can take multiple values as a comma separated list:
 
   - `-XepOpt:NullAway:AnnotatedPackages=...`
 
-The list of packages that should be considered properly annotated according to the NullAway convention (every possibly null parameter / return / field annotated `@Nullable`).
+The list of packages that should be considered properly annotated according to the NullAway convention (every possibly null parameter / return / field annotated `@Nullable`).  E.g., `-XepOpt:NullAway:AnnotatedPackages=com.foo,org.bar`.
 
   - `-XepOpt:NullAway:UnannotatedSubPackages=...`
 
-A list of subpackages to be excluded from the AnnotatedPackages list.
+A list of subpackages to be excluded from the AnnotatedPackages list.  E.g., if all code under `com.foo` packages is properly annotated _except_ for code under `com.foo.baz`, you could use the options `-XepOpt:NullAway:AnnotatedPackages=com.foo -XepOpt:NullAway:UnannotatedSubPackages=com.foo.baz`.
 
   - `-XepOpt:NullAway:KnownInitializers=...`
 
