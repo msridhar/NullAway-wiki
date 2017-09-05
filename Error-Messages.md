@@ -1,6 +1,6 @@
 Here we explain the different warning messages that NullAway produces and how to address them.  For an overview of NullAway see [the main README](https://github.com/uber/NullAway/blob/master/README.md).
 
-#### dereferenced expression is `@Nullable`
+#### dereferenced expression is @Nullable
 
 This error occurs when code reads a field, writes a field, or invokes a method on some expression, and that expression might be null.  Example:
 
@@ -63,7 +63,7 @@ void caller(@Nullable Object y) {
 ```
 To fix, either make the parameter `@NonNull`, place the method call under an appropriate null check for the parameter, or make the parameter `@Nullable`.
 
-### assigning `@Nullable` expression to `@NonNull` field
+#### assigning `@Nullable` expression to `@NonNull` field
 
 Here's an example of how this can happen:
 ```
