@@ -1,6 +1,6 @@
 Here we explain the different warning messages that NullAway produces and how to address them.  For an overview of NullAway see [the main README](https://github.com/uber/NullAway/blob/master/README.md).
 
-#### dereferenced expression is @Nullable
+### dereferenced expression is @Nullable
 
 This error occurs when code reads a field, writes a field, or invokes a method on some expression, and that expression might be null.  Example:
 
@@ -20,7 +20,7 @@ if (x != null) {
 
 Be sure to add appropriate logic to handle the case where the expression is null!  Or, even better, try to find a way to rewrite the code so the expression can't be null in the first place.
 
-#### returning @Nullable expression from method with @NonNull return type
+### returning @Nullable expression from method with @NonNull return type
 
 This error occurs when code is returning a `@Nullable` expression from a method whose return type is not annotated as `@Nullable`.  Example:
 
@@ -52,7 +52,7 @@ Object m(@Nullable Object x) {
 }
 ```
 
-#### passing @Nullable parameter where @NonNull is required
+### passing @Nullable parameter where @NonNull is required
 
 This can happen in cases like the following:
 ```
@@ -63,7 +63,7 @@ void caller(@Nullable Object y) {
 ```
 To fix, either make the parameter `@NonNull`, place the method call under an appropriate null check for the parameter, or make the parameter `@Nullable`.
 
-#### assigning @Nullable expression to @NonNull field
+### assigning @Nullable expression to @NonNull field
 
 Here's an example of how this can happen:
 ```
@@ -79,7 +79,7 @@ class Foo {
 
 To fix, either make the right-hand side of the assignment `@NonNull`, place the assignment under an appropriate null check for the right-hand side, or make the field `@Nullable`.
 
-#### method returns @Nullable, but superclass method returns @NonNull
+### method returns @Nullable, but superclass method returns @NonNull
 
 This error means you have overridden a superclass method in an invalid way.  Here's an example of why it's bad.
 
@@ -102,7 +102,7 @@ class Main {
 
 The key idea is that when code gets an object of type `Super`, it needs to be able to rely on the fact that `Super.getObj()` returns a `@NonNull` value.  If subclassing breaks this guarantee, it can lead to `NullPointerException`s.  
 
-#### parameter is @NonNull, but parameter in superclass method is @Nullable
+### parameter is @NonNull, but parameter in superclass method is @Nullable
 
 This error is similar to the previous one regarding bad overriding and return types.  Here's an example of why it's needed:
 ```
@@ -124,7 +124,7 @@ class Main {
 ```
 Subclasses cannot safely override a method and annotate a parameter as `@NonNull` if the overridden method has a `@Nullable` parameter.
 
-#### initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized
+### initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized
 
 This error indicates that a `@NonNull` field may not be properly initialized in some case.  There are two ways to initialize a `@NonNull` field: (1) in the constructors of a class, or (2) in a designated initializer method.  For the case of constructors, each `@NonNull` field must be initialized in //every// constructor (a constructor that invokes another constructor via `this(...)` is excluded).  A field can also be initialized in a method called by the constructor, provided that the method is either `private` or `final` (to prevent overriding) and the constructor invokes the method at the top-level, not under an `if` condition (to guarantee the call always executes).
 
