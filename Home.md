@@ -2,5 +2,6 @@ Welcome to the NullAway wiki!  We currently have more detailed documentation on 
 
 * [[Configuration]]
 * [[Error Messages]]
+* [[Maps]]
 * [[Suppressing Warnings]]
 
