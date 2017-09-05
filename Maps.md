@@ -34,4 +34,4 @@ if (m.containsKey(key)) {
 }
 ```
 
-Finally, you may have noticed that the checker is being a bit lax: just because `m.containsKey(key)` is true, it does not mean that `m.get(key)` is `@NonNull`, since the map may contain null values.  We deliberately ignore this case to make the checker more usable.  It is best to avoid storing `null` values in a map; the Guava collections (disallow `null` values)[https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained].
+Finally, you may have noticed that the checker is being a bit lax: just because `m.containsKey(key)` is true, it does not mean that `m.get(key)` is `@NonNull`, since the map may contain null values.  We deliberately ignore this case to make the checker more usable.  It is best to avoid storing `null` values in a map; e.g. the Guava collections [disallow `null` values](https://github.com/google/guava/wiki/UsingAndAvoidingNullExplained).
