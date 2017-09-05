@@ -17,7 +17,7 @@ if (!m.containsKey(key)) {
 }
 // here m.get(key) is @NonNull, assuming newValue is @NonNull
 ```
-The checker does not yet understand more complex cases like iterating over a map's `keySet()`; see [[Suppressing Warnings]] for workaround.  The checker also does not yet understand autoboxing, so it may complain if, e.g., you directly use an `int` or a `char` in calls to map methods.
+The checker does not yet understand more complex cases like iterating over a map's `keySet()`; see [[Suppressing Warnings]] for workarounds.  The checker also does not yet understand autoboxing, so it may complain if, e.g., you directly use an `int` or a `char` in calls to map methods.
 
 If you use a complex expression to hold the key, the checker may complain, e.g.:
 ```
