@@ -26,5 +26,5 @@ A list of annotations that cause fields to be excluded from being checked for pr
 
 ## Library Models
 
-In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the same classpath as the checker itself, and consider those as plug-in models for third-party unannotated libraries. Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for `com.uber.nullaway.LibraryModels` itself.
+In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the annotation processor path, and consider those as plug-in models for third-party unannotated libraries. (We search for such classes using the [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) facility.) Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for `com.uber.nullaway.LibraryModels` itself.
 
