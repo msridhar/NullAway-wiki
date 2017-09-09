@@ -4,14 +4,14 @@ Here we explain the different warning messages that NullAway produces and how to
 
 This error occurs when code reads a field, writes a field, or invokes a method on some expression, and that expression might be null.  Example:
 
-```
+```java
 Object x = null;
 x.toString(); // dereferencing x, which is null
 ```
 
 To fix this error, you can move the dereference under a check that the expression is not null.  E.g.:
 
-```
+```java
 Object x = null;
 if (x != null) {
   x.toString();  // this is safe now
@@ -24,7 +24,7 @@ Be sure to add appropriate logic to handle the case where the expression is null
 
 This error occurs when code is returning a `@Nullable` expression from a method whose return type is not annotated as `@Nullable`.  Example:
 
-```
+```java
 Object m(@Nullable Object x) {
   return x; // oops!  return type is unannotated, hence @NonNull
 }
@@ -32,7 +32,7 @@ Object m(@Nullable Object x) {
 
 To fix this error, you can add a `@Nullable` annotation to the return type, e.g.:
 
-```
+```java
 @Nullable
 Object m(@Nullable Object x) {
   return x; 
@@ -41,7 +41,7 @@ Object m(@Nullable Object x) {
 
 Or, you can place the `return` statement under an appropriate null check:
 
-```
+```java
 Object m(@Nullable Object x) {
   if (x != null) {
     return x;
@@ -55,7 +55,7 @@ Object m(@Nullable Object x) {
 ### passing @Nullable parameter where @NonNull is required
 
 This can happen in cases like the following:
-```
+```java
 void nonNullParam(Object x) {}
 void caller(@Nullable Object y) {
   nonNullParam(y); // bad!
@@ -66,7 +66,7 @@ To fix, either make the parameter `@NonNull`, place the method call under an app
 ### assigning @Nullable expression to @NonNull field
 
 Here's an example of how this can happen:
-```
+```java
 class Foo {
 
   Object myField;  // @NonNull since it's not annotated
@@ -83,7 +83,7 @@ To fix, either make the right-hand side of the assignment `@NonNull`, place the 
 
 This error means you have overridden a superclass method in an invalid way.  Here's an example of why it's bad.
 
-```
+```java
 class Super {
   Object getObj() { return new Object(); }
 }
@@ -105,7 +105,7 @@ The key idea is that when code gets an object of type `Super`, it needs to be ab
 ### parameter is @NonNull, but parameter in superclass method is @Nullable
 
 This error is similar to the previous one regarding bad overriding and return types.  Here's an example of why it's needed:
-```
+```java
 class Super {
   void handleObj(@Nullable Object obj) { }
 }
@@ -129,7 +129,7 @@ Subclasses cannot safely override a method and annotate a parameter as `@NonNull
 This error indicates that a `@NonNull` field may not be properly initialized in some case.  There are two ways to initialize a `@NonNull` field: (1) in the constructors of a class, or (2) in a designated initializer method.  For the case of constructors, each `@NonNull` field must be initialized in //every// constructor (a constructor that invokes another constructor via `this(...)` is excluded).  A field can also be initialized in a method called by the constructor, provided that the method is either `private` or `final` (to prevent overriding) and the constructor invokes the method at the top-level, not under an `if` condition (to guarantee the call always executes).
 
 An example:
-```
+```java
 class C1 {
   // non-null fields
   Object f1, f2;
