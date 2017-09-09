@@ -166,6 +166,6 @@ Initialization can also occur in special initializer method to handle alternate 
   'android.app.Application.onCreate',
   'javax.annotation.processing.Processor.init'
 ```
-Overrides of these methods will be treated as initializers.  (If you think any third-party library methods should be added to the list, please let `programming-systems-group@uber.com` know.)  Within our codebase, you can specify a method as an initializer with the `@Initializer` annotation, but this should be used very sparingly; it is best not to introduce one-off complex initialization patterns.  As with constructors, initializers can invoke private or final methods at the top level to perform initialization.
+Overrides of these methods will be treated as initializers.  (If you think any third-party library methods should be added to the list, please file an issue.)  Within our codebase, you can specify a method as an initializer with the `@Initializer` annotation, but this should be used very sparingly; it is best not to introduce one-off complex initialization patterns.  As with constructors, initializers can invoke private or final methods at the top level to perform initialization.
 
 If you get a field initialization error, you can fix it by ensuring the field is initialized in all cases, or by making the field `@Nullable`.
