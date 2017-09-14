@@ -175,8 +175,7 @@ class C2 {
   // non-null fields
   Object foo;
 
-  C2() {
-  }
+  C2() { }
 
   @Initializer
   public int initMe() {
