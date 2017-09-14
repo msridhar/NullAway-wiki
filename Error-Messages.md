@@ -168,4 +168,26 @@ Initialization can also occur in special initializer method to handle alternate 
 ```
 Overrides of these methods will be treated as initializers.  (If you think any third-party library methods should be added to the list, please file an issue.)  Within our codebase, you can specify a method as an initializer with the `@Initializer` annotation, but this should be used very sparingly; it is best not to introduce one-off complex initialization patterns.  As with constructors, initializers can invoke private or final methods at the top level to perform initialization.
 
+Note that for a field to be considered initializer by an initializer method, a non-null value must be assigned to that field over all possible paths through that method. The following code would not be considered to have initialized `foo`, as there is at least one case (due to the early return) where `foo` was not initialized.
+
+```
+java
+class C2 {
+  // non-null fields
+  Object foo;
+
+  C2() {
+  }
+
+  @Initializer
+  public int initMe() {
+    if (!sanityCheck()) {
+      return -1; // Error code.
+    }
+    this.foo = new Object();
+    return 0
+  }
+}
+```
+
 If you get a field initialization error, you can fix it by ensuring the field is initialized in all cases, or by making the field `@Nullable`.
