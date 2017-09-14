@@ -170,8 +170,7 @@ Overrides of these methods will be treated as initializers.  (If you think any t
 
 Note that for a field to be considered initializer by an initializer method, a non-null value must be assigned to that field over all possible paths through that method. The following code would not be considered to have initialized `foo`, as there is at least one case (due to the early return) where `foo` was not initialized.
 
-```
-java
+```java
 class C2 {
   // non-null fields
   Object foo;
