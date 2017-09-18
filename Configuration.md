@@ -32,3 +32,54 @@ A list of annotations that should be considered equivalent to `@Initializer` ann
 
 In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the annotation processor path, and consider those as plug-in models for third-party unannotated libraries. (We search for such classes using the [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) facility.) Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for `com.uber.nullaway.LibraryModels` itself.
 
+## Other Build Systems
+
+### Maven
+
+Here is an example Maven build configuration that pulls in Error Prone and NullAway:
+
+```xml
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5</version>
+        <configuration>
+          <compilerId>javac-with-errorprone</compilerId>
+          <forceJavacCompilerUse>true</forceJavacCompilerUse>
+          <source>1.8</source>
+          <target>1.8</target>
+          <showWarnings>true</showWarnings>
+          <annotationProcessorPaths>
+            <path>
+               <groupId>com.uber.nullaway</groupId>
+               <artifactId>nullaway</artifactId>
+               <version>0.1.3</version>
+            </path>
+          </annotationProcessorPaths>
+          <compilerArgs>
+            <arg>-Xep:NullAway:ERROR</arg>
+            <arg>-XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
+          </compilerArgs>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-compiler-javac-errorprone</artifactId>
+            <version>2.8</version>
+          </dependency>
+          <!-- override plexus-compiler-javac-errorprone's dependency on
+               Error Prone with the latest version -->
+          <dependency>
+            <groupId>com.google.errorprone</groupId>
+            <artifactId>error_prone_core</artifactId>
+            <version>2.1.1</version>
+          </dependency>
+        </dependencies>        
+      </plugin>
+  </build>
+```
+### Other
+
+The first step is to get Error Prone running on your build, as documented [here](http://errorprone.info/docs/installation).  Then, you need to get the NullAway jar on the annotation processor path for the Javac invocations where Error Prone is running.  Finally, you need to pass the appropriate compiler arguments to configure NullAway (at the least, the `-XepOpt:NullAway:AnnotatedPackages` option).
