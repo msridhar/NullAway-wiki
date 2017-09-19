@@ -55,7 +55,7 @@ Here is an example Maven build configuration that pulls in Error Prone and NullA
             <path>
                <groupId>com.uber.nullaway</groupId>
                <artifactId>nullaway</artifactId>
-               <version>0.1.3</version>
+               <version>0.1.4</version>
             </path>
           </annotationProcessorPaths>
           <compilerArgs>
