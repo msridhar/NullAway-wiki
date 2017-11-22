@@ -4,6 +4,10 @@ In some cases, you will encounter code where a value can never be null, but due 
 
 You can write `@SuppressWarnings("NullAway")` on any method, field, or class to suppress all NullAway warnings on that entity.  This suppression is often too coarse, suppressing warnings on much more than the problematic code; we encourage use of downcasting (described below) for most cases to narrow the suppression.
 
+### Suppressing only initialization warnings
+
+You can write `@SuppressWarnings("NullAway.Init")` on a field declaration to only suppress warnings related to possibly-missing initialization of that field.
+
 ### Downcasting
 
 One can easily write a "downcast" method that takes an argument of `@Nullable` type and returns the same value as `@NonNull`:
