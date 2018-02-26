@@ -18,7 +18,11 @@ The fully qualified name (without argument's, e.g. `android.app.Activity.onCreat
 
   - `-XepOpt:NullAway:ExcludedClassAnnotations=...`
 
-A list of annotations that cause classes to be excluded from nullability analysis.
+A list of annotations that cause classes to be excluded from nullability analysis.  Note that while NullAway does not analyze the code of these classes, it still assumes the APIs are annotated correctly when analyzing callers into methods of the classes.
+
+  - `-XepOpt:NullAway:ExcludedClasses=...`
+
+A list of classes to be excluded from the nullability analysis.  Note that while NullAway does not analyze the code of these classes, it still assumes the APIs are annotated correctly when analyzing callers into methods of the classes.
 
   - `-XepOpt:NullAway:ExcludedFieldAnnotations=...`
 
@@ -30,8 +34,11 @@ A list of annotations that should be considered equivalent to `@Initializer` ann
 
   - `-XepOpt:NullAway:ExternalInitAnnotations=...`
 
-A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like `@Table`), after invoking the zero-argument constructor. For any class annotated with an external-init annotation, we don't check that the zero-arg constructor initializes all non-null fields.
+A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like [`@Table`](https://docs.datastax.com/en/drivers/java/3.2/com/datastax/driver/mapping/annotations/Table.html)), after invoking the zero-argument constructor. For any class annotated with an external-init annotation, we don't check that the zero-arg constructor initializes all non-null fields.
 
+  - `-XepOpt:NullAway:TreatGeneratedAsUnannotated=...`
+
+If set to `true`, NullAway treats any class annotated with `@Generated` as if its APIs are unannotated when analyzing uses from other classes.  It also does not perform analysis on the code inside `@Generated` classes.  If you want to skip analysis of `@Generated` classes but the APIs are properly annotated for nullability, use the `-XepOpt:NullAway:ExcludedClassAnnotations` option instead.  Defaults to `false`.
 ## Library Models
 
 In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the annotation processor path, and consider those as plug-in models for third-party unannotated libraries. (We search for such classes using the [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) facility.) Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for `com.uber.nullaway.LibraryModels` itself.  Also see our [sample library model](https://github.com/uber/NullAway/tree/master/sample-library-model) for an example; it is pulled in and used by our sample Java module (see [the `build.gradle` file](https://github.com/uber/NullAway/blob/ac6e3e1b63d357eec5f9e32fb02b024bf9cfb1f9/sample/build.gradle#L28)).
