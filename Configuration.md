@@ -91,6 +91,44 @@ Here is an example Maven build configuration that pulls in Error Prone and NullA
       </plugin>
   </build>
 ```
+
+### Bazel
+
+An example (based on [this](https://github.com/uber/NullAway/issues/119#issue-294049136)).
+
+WORKSPACE:
+```python
+maven_jar(
+	name='jsr305',
+	artifact='com.google.code.findbugs:jsr305:3.0.2',
+)
+
+maven_jar(
+	name="nullaway",
+	artifact="com.uber.nullaway:nullaway:0.3.4"
+)
+```
+
+BUILD:
+```python
+java_library(
+	name='x',
+	srcs=['X.java'],
+	deps=['@jsr305//jar'],
+	plugins=['nullaway'],
+	javacopts=[
+		'-Xep:NullAway:ERROR',
+		'-XepOpt:NullAway:AnnotatedPackages=com.example',
+	],
+)
+
+java_plugin(
+	name='nullaway',
+	deps=[
+		'@nullaway//jar'
+	],
+)
+```
 ### Other
 
 The first step is to get Error Prone running on your build, as documented [here](http://errorprone.info/docs/installation).  Then, you need to get the NullAway jar on the annotation processor path for the Javac invocations where Error Prone is running.  Finally, you need to pass the appropriate compiler arguments to configure NullAway (at the least, the `-XepOpt:NullAway:AnnotatedPackages` option).
