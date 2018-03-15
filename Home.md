@@ -3,5 +3,6 @@ Welcome to the NullAway wiki!  We currently have documentation on the following 
 * [[Configuration]]
 * [[Error Messages]]
 * [[Maps]]
+* [[Supported Annotations]]
 * [[Suppressing Warnings]]
 
