@@ -197,4 +197,4 @@ In addition to any annotation with the `@Initializer` simple name, Null Away rec
   'org.junit.BeforeClass'
 ```
 
-As well as any fully-qualified annotation name passed using the ``-XepOpt:NullAway:CustomInitializerAnnotations=` configuration option.
+As well as any fully-qualified annotation name passed using the `-XepOpt:NullAway:CustomInitializerAnnotations=` configuration option.
