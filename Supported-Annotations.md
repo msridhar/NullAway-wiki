@@ -19,5 +19,9 @@ public class NullnessChecker {
   static boolean isNonNull(@Nullable Object o) { return o != null; }
   @Contract("null -> fail")
   static void assertNonNull(@Nullable Object o) { if (o != null) throw new Error(); }
+  @Contract("!null -> !null")
+  static @Nullable Object id(@Nullable Object o) { return o; }
 }
 ```
+
+For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with an invalid `@Contract` annotation.  
