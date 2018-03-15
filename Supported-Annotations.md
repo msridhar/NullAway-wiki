@@ -28,4 +28,4 @@ public class NullnessChecker {
 }
 ```
 
-For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with an invalid `@Contract` annotation.  
+For now, the `@Contract` annotations are trusted, not checked.  NullAway will often warn if it sees a call to a method with an invalid `@Contract` annotation.  
