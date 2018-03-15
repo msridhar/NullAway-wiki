@@ -13,12 +13,16 @@ Any annotation whose simple (un-qualified) name is `@Initializer` is treated as 
 NullAway has partial support for [JetBrains `@Contract` annotations](https://www.jetbrains.com/help/idea/contract-annotations.html).  Some examples:
 ```java
 public class NullnessChecker {
+
   @Contract("_, null -> true")
   static boolean isNull(boolean flag, @Nullable Object o) { return o == null; }
+
   @Contract("null -> false")
   static boolean isNonNull(@Nullable Object o) { return o != null; }
+
   @Contract("null -> fail")
   static void assertNonNull(@Nullable Object o) { if (o != null) throw new Error(); }
+
   @Contract("!null -> !null")
   static @Nullable Object id(@Nullable Object o) { return o; }
 }
