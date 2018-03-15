@@ -30,4 +30,4 @@ public class NullnessChecker {
 
 For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with a `@Contract` annotation it recognizes as invalid. 
 
-Not all possible clauses of `@Contract` annotations are validated or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway can't reason about the runtime value of the second argument).
+Not all possible clauses of `@Contract` annotations are parsed or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway can't reason about the runtime value of the second argument).
