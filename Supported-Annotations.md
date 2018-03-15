@@ -1,4 +1,4 @@
-This page documents the different code annotations that are supported by NullAway by default.  
+This page documents the different code annotations that are supported by NullAway by default.  Custom annotations can be supported for certain functionality via the [command-line flags](https://github.com/uber/NullAway/wiki/Configuration).
 
 ### Nullability
 
