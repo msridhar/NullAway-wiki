@@ -128,6 +128,7 @@ class Test {
   static Object doApply(NoArgFunc f) {
     return f.apply();
   }
+  @Nullable
   static Object returnNull() { return null; }
   static void test() {
     doApply(Test::returnNull).toString(); // NullPointerException!
