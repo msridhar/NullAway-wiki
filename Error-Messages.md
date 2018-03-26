@@ -1,7 +1,6 @@
 Here we explain the different warning messages that NullAway produces and how to address them.  For an overview of NullAway see [the main README](https://github.com/uber/NullAway/blob/master/README.md).
 
-Table of Contents
-=================
+### Table of Contents
 
 * [dereferenced expression is @Nullable](#dereferenced-expression-is-nullable)
 * [returning @Nullable expression from method with @NonNull return type](#returning-nullable-expression-from-method-with-nonnull-return-type)
