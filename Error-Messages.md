@@ -1,5 +1,16 @@
 Here we explain the different warning messages that NullAway produces and how to address them.  For an overview of NullAway see [the main README](https://github.com/uber/NullAway/blob/master/README.md).
 
+Table of Contents
+=================
+
+         * [dereferenced expression is @Nullable](#dereferenced-expression-is-nullable)
+         * [returning @Nullable expression from method with @NonNull return type](#returning-nullable-expression-from-method-with-nonnull-return-type)
+         * [passing @Nullable parameter where @NonNull is required](#passing-nullable-parameter-where-nonnull-is-required)
+         * [assigning @Nullable expression to @NonNull field](#assigning-nullable-expression-to-nonnull-field)
+         * [method returns @Nullable, but superclass method returns @NonNull](#method-returns-nullable-but-superclass-method-returns-nonnull)
+         * [parameter is @NonNull, but parameter in superclass method is @Nullable](#parameter-is-nonnull-but-parameter-in-superclass-method-is-nullable)
+         * [initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized](#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized)
+
 ### dereferenced expression is @Nullable
 
 This error occurs when code reads a field, writes a field, or invokes a method on some expression, and that expression might be null.  Example:
