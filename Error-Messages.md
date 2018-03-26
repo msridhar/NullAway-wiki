@@ -112,7 +112,24 @@ class Main {
 }
 ```
 
-The key idea is that when code gets an object of type `Super`, it needs to be able to rely on the fact that `Super.getObj()` returns a `@NonNull` value.  If subclassing breaks this guarantee, it can lead to `NullPointerException`s.  
+The key idea is that when code gets an object of type `Super`, it needs to be able to rely on the fact that `Super.getObj()` returns a `@NonNull` value.  If subclassing breaks this guarantee, it can lead to `NullPointerException`s.
+
+### referenced method returns @Nullable, but functional interface method returns @NonNull
+
+This is a version of the previous error specific to method references.  Example:
+```java
+interface NoArgFunc {
+  Object apply();
+}
+class Test {
+  static Object doApply(NoArgFunc f) {
+    return f.apply();
+  }
+  static Object returnNull() { return null; }
+  static void test() {
+    doApply(Test::returnNull).toString(); // NullPointerException!
+```
+The key idea is that when code invokes `NoArgFunc.apply()`, it needs to be able to rely on the fact that the return value will be `@NonNull`.  If a method reference breaks this guarantee, it can lead to `NullPointerException`s.
 
 ### parameter is @NonNull, but parameter in superclass method is @Nullable
 
@@ -135,6 +152,50 @@ class Main {
 }
 ```
 Subclasses cannot safely override a method and annotate a parameter as `@NonNull` if the overridden method has a `@Nullable` parameter.
+
+### parameter is @NonNull, but parameter in functional interface method is @Nullable
+
+This is just like the previous error, but specific to lambdas and method references.  Example:
+```java
+interface NullableArgFunc {
+  void apply(@Nullable Object o);
+}
+class Test {
+  static void doApply(NullableArgFunc f, @Nullable Object p) {
+    f.apply(p);
+  }
+  static void derefArg(Object q) {
+    q.toString();
+  }
+  static void test() {
+    doApply((Object x) -> { print(x.hashCode()); }, null); // NullPointerException
+    doApply(Test::derefArg, null); // also NullPointerException
+  }
+}
+```
+Lambdas / method references cannot assume a parameter is `@NonNull` if the functional interface declares it as `@Nullable`.
+
+Note that if the first `doApply` call were written as `doApply(x -> { print(x.hashCode()); }`, without the explicit type for the parameter, NullAway would treat the parameter as `@Nullable` (inherited from the functional interface method), and hence would report an error at the dereference `x.hashCode()`.
+
+### unbound instance method reference cannot be used, as first parameter of functional interface method is @Nullable
+
+This is the same as the previous error, specialized to the case of the first parameter of an unbound instance method reference (or a "Reference to an instance method of a arbitrary object supplied later"; see [here](http://baddotrobot.com/blog/2014/02/18/method-references-in-java8/)).  Example:
+
+```java
+interface NullableArgFunc<T> {
+  void apply(@Nullable T o);
+}
+class Test {
+  static <T> void doApply(NullableArgFunc<T> f, @Nullable T p) {
+    f.apply(p);
+  }
+  void instMethod() {}
+  static void test() {
+    doApply(Test::instMethod, null); // NullPointerException
+  }
+}
+```
+Here, writing `Test::instMethod` is equivalent to writing `x -> { x.instMethod(); }`.  Hence, the `doApply` call will cause an NPE.
 
 ### initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized
 
