@@ -7,7 +7,10 @@ Here we explain the different warning messages that NullAway produces and how to
 * [passing @Nullable parameter where @NonNull is required](#passing-nullable-parameter-where-nonnull-is-required)
 * [assigning @Nullable expression to @NonNull field](#assigning-nullable-expression-to-nonnull-field)
 * [method returns @Nullable, but superclass method returns @NonNull](#method-returns-nullable-but-superclass-method-returns-nonnull)
+* [referenced method returns @Nullable, but functional interface method returns @NonNull](#referenced-method-returns-nullable-but-functional-interface-method-returns-nonnull)
 * [parameter is @NonNull, but parameter in superclass method is @Nullable](#parameter-is-nonnull-but-parameter-in-superclass-method-is-nullable)
+* [parameter is @NonNull, but parameter in functional interface method is @Nullable](#parameter-is-nonnull-but-parameter-in-functional-interface-method-is-nullable)
+* [unbound instance method reference cannot be used, as first parameter of functional interface method is @Nullable](#unbound-instance-method-reference-cannot-be-used-as-first-parameter-of-functional-interface-method-is-nullable)
 * [initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized](#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized)
 
 ## Messages
@@ -128,6 +131,8 @@ class Test {
   static Object returnNull() { return null; }
   static void test() {
     doApply(Test::returnNull).toString(); // NullPointerException!
+  }
+}
 ```
 The key idea is that when code invokes `NoArgFunc.apply()`, it needs to be able to rely on the fact that the return value will be `@NonNull`.  If a method reference breaks this guarantee, it can lead to `NullPointerException`s.
 
