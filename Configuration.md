@@ -50,15 +50,15 @@ If set to `true`, NullAway treats any class annotated with `@Generated` as if it
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
 
-However, this means it is still possible to cover patterns o package names, such as:
+It is still possible to cover patterns of package names, such as:
 
 `-XepOpt:NullAway:UnannotatedSubPackages=[a-zA-Z0-9.]*.unannotated`
 
 (Will consider any code inside any subpackage named `unannotated`, including subpackages thereof, as unannotated. E.g. `a.unanoted`, `x.y.z.unannotated.z`.)
 
-`-XepOpt:NullAway:UnannotatedSubPackages=com.myorg.generated_[a-zA-Z0-9.]*`
+`-XepOpt:NullAway:UnannotatedSubPackages=com.myorg.generated_[a-zA-Z0-9]*`
 
-(Matches `com.myorg.generated_Foo.subpackage`, but not `com.myorg.source_Foo.subpackage` or `com.myorgxgenerated_Foo`.)
+(Matches `com.myorg.generated_Foo.subpackage`, but not `com.myorg.source_Foo.subpackage` or `comxmyorg.generated_Foo`.)
 
 ## Library Models
 
