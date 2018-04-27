@@ -8,13 +8,13 @@ The following flags are currently supported; each of them can take multiple valu
 
 The list of packages that should be considered properly annotated according to the NullAway convention (every possibly null parameter / return / field annotated `@Nullable`).  E.g., `-XepOpt:NullAway:AnnotatedPackages=com.foo,org.bar`.
 
-This option supports [restricted regexp syntax](#Restricted-Regexp-Package-Patterns).
+This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
   - `-XepOpt:NullAway:UnannotatedSubPackages=...`
 
 A list of subpackages to be excluded from the AnnotatedPackages list.  E.g., if all code under `com.foo` packages is properly annotated _except_ for code under `com.foo.baz`, you could use the options `-XepOpt:NullAway:AnnotatedPackages=com.foo -XepOpt:NullAway:UnannotatedSubPackages=com.foo.baz`.
 
-This option supports [restricted regexp syntax](#Restricted-Regexp-Package-Patterns).
+This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
   - `-XepOpt:NullAway:KnownInitializers=...`
 
