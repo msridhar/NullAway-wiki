@@ -16,6 +16,10 @@ A list of subpackages to be excluded from the AnnotatedPackages list.  E.g., if 
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
+  - `-XepOpt:NullAway:UnannotatedClasses=...`
+
+A list of classes within annotated packages that should be treated as unannotated.  E.g., if all code under `com.foo` should be treated as annotated except for the class `com.foo.UnAnnot`, you could use the options `-XepOpt:NullAway:AnnotatedPackages=com.foo -XepOpt:NullAway:UnannotatedClasses=com.foo.UnAnnot`.
+
   - `-XepOpt:NullAway:KnownInitializers=...`
 
 The fully qualified name (without argument's, e.g. `android.app.Activity.onCreate`) of those methods from third-party libraries that NullAway should treat as initializers (equivalent to being annotated with an `@Initializer` annotation).
