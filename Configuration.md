@@ -4,6 +4,8 @@ The NullAway checker takes multiple configuration flags, in the format of [Error
 
 The following flags are currently supported; each of them can take multiple values as a comma separated list:
 
+### Annotated Packages
+
   - `-XepOpt:NullAway:AnnotatedPackages=...`
 
 The list of packages that should be considered properly annotated according to the NullAway convention (every possibly null parameter / return / field annotated `@Nullable`).  E.g., `-XepOpt:NullAway:AnnotatedPackages=com.foo,org.bar`.
