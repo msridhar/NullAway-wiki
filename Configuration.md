@@ -12,27 +12,39 @@ The list of packages that should be considered properly annotated according to t
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
+### Unannotated Sub-packages
+
   - `-XepOpt:NullAway:UnannotatedSubPackages=...`
 
 A list of subpackages to be excluded from the AnnotatedPackages list.  E.g., if all code under `com.foo` packages is properly annotated _except_ for code under `com.foo.baz`, you could use the options `-XepOpt:NullAway:AnnotatedPackages=com.foo -XepOpt:NullAway:UnannotatedSubPackages=com.foo.baz`.
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
+### Unannotated Classes
+
   - `-XepOpt:NullAway:UnannotatedClasses=...`
 
 A list of classes within annotated packages that should be treated as unannotated.  E.g., if all code under `com.foo` should be treated as annotated except for the class `com.foo.UnAnnot`, you could use the options `-XepOpt:NullAway:AnnotatedPackages=com.foo -XepOpt:NullAway:UnannotatedClasses=com.foo.UnAnnot`.
+
+### Known Initializers
 
   - `-XepOpt:NullAway:KnownInitializers=...`
 
 The fully qualified name (without argument's, e.g. `android.app.Activity.onCreate`) of those methods from third-party libraries that NullAway should treat as initializers (equivalent to being annotated with an `@Initializer` annotation).
 
+### Excluded Class Annotations
+
   - `-XepOpt:NullAway:ExcludedClassAnnotations=...`
 
 A list of annotations that cause classes to be excluded from nullability analysis.  Note that while NullAway does not analyze the code of these classes, it still assumes the APIs are annotated correctly when analyzing callers into methods of the classes.
 
+### Excluded Classes
+
   - `-XepOpt:NullAway:ExcludedClasses=...`
 
 A list of classes to be excluded from the nullability analysis.  Note that while NullAway does not analyze the code of these classes, it still assumes the APIs are annotated correctly when analyzing callers into methods of the classes.
+
+### Excluded Field Annotations
 
   - `-XepOpt:NullAway:ExcludedFieldAnnotations=...`
 
@@ -40,13 +52,19 @@ A list of annotations that cause fields to be excluded from being checked for pr
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
+### Custom Initializer Annotations
+
   - `-XepOpt:NullAway:CustomInitializerAnnotations=...`
 
 A list of annotations that should be considered equivalent to `@Initializer` annotations, and thus mark methods as initializers (e.g. `org.junit.Before` and `org.junit.BeforeClass`, which are automatically added to this list by default). Note that any annotation with the simple name `@Initializer`, from any package, will be considered an initializer annotation, but names passed to this configuration option must be fully-qualified class names.
 
+### External Init Annotations
+
   - `-XepOpt:NullAway:ExternalInitAnnotations=...`
 
 A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like [`@Table`](https://docs.datastax.com/en/drivers/java/3.2/com/datastax/driver/mapping/annotations/Table.html)), after invoking the zero-argument constructor. For any class annotated with an external-init annotation, we don't check that the zero-arg constructor initializes all non-null fields.
+
+### Treat Generated As Unannotated
 
   - `-XepOpt:NullAway:TreatGeneratedAsUnannotated=...`
 
