@@ -56,8 +56,9 @@ paths across method calls.
 The dataflow transfer functions are
 implemented
 [here](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/dataflow/AccessPathNullnessPropagation.java).
-For the most part, the built-in transfer functions are
-straightforward.  Some care must be taken
+For the most part, the transfer functions simply propagate information
+learned from assignments and null checks for any expression
+representable as an access path.  Some care must be taken
 in
 [constructing the initial store](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/dataflow/AccessPathNullnessPropagation.java#L193) when
 analyzing the body of a lambda expression.  Unlike normal methods,
