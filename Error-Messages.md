@@ -12,7 +12,7 @@ Here we explain the different warning messages that NullAway produces and how to
 * [parameter is @NonNull, but parameter in functional interface method is @Nullable](#parameter-is-nonnull-but-parameter-in-functional-interface-method-is-nullable)
 * [unbound instance method reference cannot be used, as first parameter of functional interface method is @Nullable](#unbound-instance-method-reference-cannot-be-used-as-first-parameter-of-functional-interface-method-is-nullable)
 * [initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized](#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized)
-* [read of @NonNull field before initialization](#read-of-nonnull-field-before-initialization]
+* [read of @NonNull field before initialization](#read-of-nonnull-field-before-initialization)
 
 ## Messages
 
