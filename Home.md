@@ -5,4 +5,4 @@ Welcome to the NullAway wiki!  We currently have documentation on the following 
 * [[Maps]]
 * [[Supported Annotations]]
 * [[Suppressing Warnings]]
-
+* [[How NullAway Works]]
