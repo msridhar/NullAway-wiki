@@ -12,6 +12,7 @@ Here we explain the different warning messages that NullAway produces and how to
 * [parameter is @NonNull, but parameter in functional interface method is @Nullable](#parameter-is-nonnull-but-parameter-in-functional-interface-method-is-nullable)
 * [unbound instance method reference cannot be used, as first parameter of functional interface method is @Nullable](#unbound-instance-method-reference-cannot-be-used-as-first-parameter-of-functional-interface-method-is-nullable)
 * [initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized](#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized)
+* [read of @NonNull field before initialization](#read-of-nonnull-field-before-initialization]
 
 ## Messages
 
@@ -277,3 +278,21 @@ In addition to any annotation with the `@Initializer` simple name, Null Away rec
 ```
 
 As well as any fully-qualified annotation name passed using the `-XepOpt:NullAway:CustomInitializerAnnotations=` configuration option.
+
+### read of @NonNull field before initialization
+
+This error is reported when a `@NonNull` field is used before it is
+initialized, e.g.:
+```java
+class C {
+
+  Object foo;
+  
+  C() {
+    this.foo.toString(); // foo not initialized yet!
+    this.foo = new Object();
+  }
+}
+```
+
+To fix this error, perform the initialization before reading the field.
