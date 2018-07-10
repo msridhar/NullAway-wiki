@@ -69,8 +69,8 @@ required to "infer" the initial nullability of the lambda parameters.
 For matching of `containsKey()` and `get()` calls
 for [maps](https://github.com/uber/NullAway/wiki/Maps), NullAway
 additionally tracks the receiver and first argument to such calls as an access
-path.  So, if there is a call _ap1_`.get(`_ap2_`)` underneath a
-conditional `if (`_ap1_`.containsKey(`_ap2_`)`, where _ap1_ and _ap2_
+path.  So, if there is a call `ap1.get(ap2)` underneath a
+conditional `if (ap1.containsKey(ap2))`, where `ap1` and `ap2`
 are representable access paths, NullAway treats the `get()` call as
 returning `@NonNull`.
 
@@ -127,4 +127,14 @@ introduce checks for
 nullability
 [for](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/NullAway.java#L348) [various](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/NullAway.java#L393) [operations](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/NullAway.java#L537) that
 cause unboxing.
+
+## Extensibility through Handlers
+
+The main way to extend the behavior of NullAway beyond the core inference and checking described above, is to use a handler. 
+
+Through the NullAway codebase, there are multiple extension points, at which methods of the [`Handler`](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/handlers/Handler.java) interface are invoked for all registered handlers registered inside `Handlers.buildDefault()`. To extend or override the default behavior for NullAway, it often suffices to scan that interface for the corresponding extension point method, then subclass [`BaseNoOpHandler`](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/handlers/BaseNoOpHandler.java) overriding only the relevant extension methods, and finally add an instance of the new handler at the end of [`Handlers.buildDefault()`](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/handlers/Handlers.java#L37).
+
+For example, consider [`LibraryModelsHandler`](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/handlers/LibraryModelsHandler.java), which is used to provide models for unannotated third-party library methods. This handler first uses a [service loader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) to find custom models for methods, in addition to those declared inside the `DefaultLibraryModels` class. It then registers itself as a handler overriding, among others, [`Handler.onDataflowVisitMethodInvocation`](https://github.com/uber/NullAway/blob/cfb1e2449b4e6d4187fcfa73ff638e3bc591603f/nullaway/src/main/java/com/uber/nullaway/handlers/Handler.java#L195). This particular extension hook allows it to change NullAway's default of assuming unannotated methods return `@NonNull` for those methods for which an explicit library model exists which shows the return method to be `@Nullable`. `LibraryModelsHandler` overrides similar extension points to mark the arguments to certain library methods as `@NonNull` and check for correct overriding of modeled library methods. Because of the handlers mechanism, the core NullAway classes don't need to know about `LibraryModels` at all.
+
+Some other NullAway extension implemented as handlers include:
 
