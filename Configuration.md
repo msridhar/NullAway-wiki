@@ -70,6 +70,18 @@ A list of annotations for classes that are "externally initialized."  Tools like
 
 If set to `true`, NullAway treats any class annotated with `@Generated` as if its APIs are unannotated when analyzing uses from other classes.  It also does not perform analysis on the code inside `@Generated` classes.  If you can modify the code generator such that at least the APIs of `@Generated` classes are annotated correctly, we recommend using the `-XepOpt:NullAway:ExcludedClassAnnotations` option instead.  Defaults to `false`.
 
+### Acknowledge More Restrictive Annotations from Third-Party Jars When Available
+
+  - `-XepOpt:NullAway:AcknowledgeRestrictiveAnnotations=...`
+
+This option adds some extra safety when dealing with third-party code that includes potentially incomplete nullability annotations. If set to `true`, NullAway will acknowledge nullability annotations whenever they are available in _unannotated_ code and also more restrictive than it's optimistic defaults. 
+
+For example, when this flag is turned on, a method `Object foo(Object o)` in an unannotated package will still be assumed to take a nullable argument and return non-null (an optimistic assumption, made for usability reasons). However, a method `Object bar(@NonNull Object o)` will be interpreted by NullAway as taking a non-null argument, and a method `@Nullable Object baz(Object o)` will be acknowledged as potentially returning `null`, even in code otherwise marked as unannotated. If this flag is turned off, which is the default, all three examples are treated as the first and optimistic defaults are assumed to reduce the number of warnings unless the package is marked as fully [annotated](#annotated-packages).
+
+Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code is meaningless, whether or not this flag is set, as that's NullAway's default for that code. But this affects NullAway's handling of code marked as _unannotated_. 
+
+Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
