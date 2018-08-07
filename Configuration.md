@@ -70,7 +70,7 @@ A list of annotations for classes that are "externally initialized."  Tools like
 
 If set to `true`, NullAway treats any class annotated with `@Generated` as if its APIs are unannotated when analyzing uses from other classes.  It also does not perform analysis on the code inside `@Generated` classes.  If you can modify the code generator such that at least the APIs of `@Generated` classes are annotated correctly, we recommend using the `-XepOpt:NullAway:ExcludedClassAnnotations` option instead.  Defaults to `false`.
 
-### Acknowledge More Restrictive Annotations from Third-Party Jars When Available
+### Acknowledge More Restrictive Annotations from Third-Party Jars
 
   - `-XepOpt:NullAway:AcknowledgeRestrictiveAnnotations=...`
 
