@@ -32,3 +32,7 @@ for (String key : map.keySet()) {
   ...
 }
 ```
+
+### Auto Suppressing
+
+If you pass the option `-Xep:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
