@@ -88,7 +88,7 @@ Also, specific method annotations can always be overridden by explicit [Library 
 
 If set to `true`, NullAway will check for `.get()` accesses to potentially empty `Optional` values, analogously to how it handles dereferences to `@Nullable` values. Calling `.get()` on an `Optional` value that hasn't been previously tested with `Optional.isPresent(...)` (or otherwise tested for non-emptiness in a way NullAway understands) will result in an error. 
 
-This mode is currently disabled by default, and it works only for `java.util.Optional`, but it is under active development. Feel free to try out and let us know what might still be missing. Support for configurable `Optional` implementations is on the pipeline. 
+This mode is currently disabled by default, and it works only for `java.util.Optional`, but it is under active development. Feel free to try it out and let us know what might still be missing. Support for configurable `Optional` implementations is on the pipeline. 
 
 ### Restricted Regexp Package Patterns
 
