@@ -82,6 +82,14 @@ Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code
 
 Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
 
+### Optional Emptiness Check
+
+  - `-XepOpt:NullAway:CheckOptionalEmptiness=...`
+
+If set to `true`, NullAway will check for `.get()` accesses to potentially empty `Optional` values, analogously to how it handles dereferences to `@Nullable` values. Calling `.get()` on an `Optional` value that hasn't been previously tested with `Optional.isPresent(...)` (or otherwise tested for non-emptiness in a way NullAway understands) will result in an error. 
+
+This mode is currently disabled by default, and it works only for `java.util.Optional`, but it is under active development. Feel free to try out and let us know what might still be missing. Support for configurable `Optional` implementations is on the pipeline. 
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
