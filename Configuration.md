@@ -112,9 +112,13 @@ In codebases where `@Override` is not used consistently, this flag should be set
 
   - `-XepOpt:NullAway:CheckOptionalEmptiness=...`
 
-If set to `true`, NullAway will check for `.get()` accesses to potentially empty `Optional` values, analogously to how it handles dereferences to `@Nullable` values. Calling `.get()` on an `Optional` value that hasn't been previously tested with `Optional.isPresent(...)` (or otherwise tested for non-emptiness in a way NullAway understands) will result in an error. 
+If set to `true`, NullAway will check for `.get()` accesses to potentially empty `Optional` values, analogously to how it handles dereferences to `@Nullable` values. Calling `.get()` on an `Optional` value that hasn't been previously tested with `Optional.isPresent(...)` (or otherwise tested for non-emptiness in a way NullAway understands) will result in an error.
 
-This mode is currently disabled by default, and it works only for `java.util.Optional`, but it is under active development. Feel free to try it out and let us know what might still be missing. Support for configurable `Optional` implementations is on the pipeline. 
+This works out of the box for `java.util.Optional`. Additionally, the following option can be used to tell NullAway of other `Optional` implementations (e.g. Guava's `com.google.common.base.Optional`).
+
+  - `-XepOpt:NullAway:CheckOptionalEmptinessCustomClasses=...`
+ 
+Optional handling (for both JDK and custom `Optional` classes) is currently disabled by default, but it is under active development. Feel free to try it out and let us know what might still be missing.
 
 ### Restricted Regexp Package Patterns
 
