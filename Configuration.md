@@ -100,6 +100,14 @@ Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code
 
 Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
 
+### Perform Exhaustive Override Checks
+
+  - `-XepOpt:NullAway:ExhaustiveOverride=...`
+
+By default, NullAway relies on the `@Override` annotation to know which methods override a super-type method and thus must be checked for consistency in the nullness of their return value and parameters. This is done for performance reasons.
+
+In codebases where `@Override` is not used consistently, this flag should be set to `true`. It forces NullAway to check every method to see whether or not it overrides a method of a super-type. 
+
 ### Optional Emptiness Check
 
   - `-XepOpt:NullAway:CheckOptionalEmptiness=...`
