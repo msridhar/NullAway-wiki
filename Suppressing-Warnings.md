@@ -33,6 +33,10 @@ for (String key : map.keySet()) {
 }
 ```
 
+When auto-patching (see below), it sometimes can be useful to tell NullAway about your `castToNonNull` method. The option `-Xep:NullAway:CastToNonNullMethod=[...]` does just that, allowing NullAway to add calls to this method rather than standard suppressions in some instances. This option is rarely used, though, and needed only for auto-patching, it is not required to implement the downcast method itself.
+
 ### Auto Suppressing
 
 If you pass the option `-Xep:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
+
+You might also wish to add a comment to the suggested suppressions with `--Xep:NullAway:AutoFixSuppressionComment=\"[ some comment ]\"`. This string will be added as `/* some comment */` alongside the `@SuppressWarnings("NullAway")` annotation. Note that, when building with gradle, this string might not contain spaces. We have still found it useful for e.g. linking an issue/task number to a series of suppressions. 
