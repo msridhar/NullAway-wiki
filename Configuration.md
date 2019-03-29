@@ -64,6 +64,24 @@ A list of annotations that should be considered equivalent to `@Initializer` ann
 
 A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like [`@Table`](https://docs.datastax.com/en/drivers/java/3.2/com/datastax/driver/mapping/annotations/Table.html)), after invoking the zero-argument constructor. For any class annotated with an external-init annotation, we don't check that the zero-arg constructor initializes all non-null fields.
 
+### Acknowledge Assertions As Dynamic Checks
+
+  - `-XepOpt:NullAway:AssertsEnabled=...`
+
+By default, NullAway ignores assertions in the analyzed code. The reason for this is that assertions are not guaranteed to be checked at runtime.
+
+Thus, in the following code:
+
+```
+T1 t1 = new T1();
+assert t1.obj != null;
+t1.obj.toString();
+```
+
+Whether `t1.obj` can or can't be `null` at the point `toString()` is called on it depends on the way the code is run and whether or not `assert` statements are being checked by the JVM (usually they are not in production runs). By default, NullAway assumes `assert` statements won't always be there at runtime, and thus it doesn't rely on nullness checks within assertions. 
+
+Setting `AssertsEnabled=true` overrides this behavior and makes NullAway assume that assertions will always be enabled at runtime (e.g. that the code will always be run with `-enableassertions` being passed to the JVM).
+
 ### Treat Generated As Unannotated
 
   - `-XepOpt:NullAway:TreatGeneratedAsUnannotated=...`
