@@ -124,7 +124,7 @@ Optional handling (for both JDK and custom `Optional` classes) is currently disa
 
   - `-XepOpt:NullAway:HandleTestAssertionLibraries=...`
 
-By default, NullAway does not handle assertions from test libraries. If set to `true`, NullAway will handle assertions from test libraries, like `assertThat(...).isNotNull()`, and use that to reason about the possibility of null dereferences in the code that follow these assertions.
+By default, NullAway does not handle assertions from test libraries. If set to `true`, NullAway will handle assertions from test libraries, like `assertThat(...).isNotNull()`, and use that to reason about the possibility of null dereferences in the code that follows these assertions.
 
 ### Restricted Regexp Package Patterns
 
