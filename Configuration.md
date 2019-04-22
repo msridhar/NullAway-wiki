@@ -120,6 +120,12 @@ This works out of the box for `java.util.Optional`. Additionally, the following 
  
 Optional handling (for both JDK and custom `Optional` classes) is currently disabled by default, but it is under active development. Feel free to try it out and let us know what might still be missing.
 
+### Assertions in Test Libraries
+
+  - `-XepOpt:NullAway:HandleTestAssertionLibraries=...`
+
+By default, NullAway does not handle assertions from test libraries. If set to `true`, NullAway will handle assertions from test libraries, like `assertThat(...).isNotNull()`, and use that to reason about the possibility of null dereferences in the code that follow these assertions.
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
