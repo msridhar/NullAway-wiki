@@ -190,6 +190,7 @@ Here is an example Maven build configuration that pulls in Error Prone and NullA
           </dependency>
         </dependencies>        
       </plugin>
+    </plugins>
   </build>
 ```
 
