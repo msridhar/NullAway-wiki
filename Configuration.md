@@ -100,6 +100,12 @@ Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code
 
 Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
 
+### Acknowledge Android "Recent" Nullability Annotations
+
+  - `-XepOpt:Nullaway:AcknowledgeAndroidRecent=...`
+
+If this flag is set to `true` *and* `-XepOpt:Nullaway:AcknowledgeRestrictiveAnnotations` is set to `true`, we treat the Android `@RecentlyNullable` annotation as `@Nullable`, and similarly for `@RecentlyNonNull`.
+
 ### Perform Exhaustive Override Checks
 
   - `-XepOpt:NullAway:ExhaustiveOverride=...`
