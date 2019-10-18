@@ -21,7 +21,7 @@ public class NullnessChecker {
   static boolean isNonNull(@Nullable Object o) { return o != null; }
 
   @Contract("null -> fail")
-  static void assertNonNull(@Nullable Object o) { if (o != null) throw new Error(); }
+  static void assertNonNull(@Nullable Object o) { if (o == null) throw new Error(); }
 
   @Contract("!null -> !null")
   static @Nullable Object id(@Nullable Object o) { return o; }
