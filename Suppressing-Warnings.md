@@ -37,6 +37,6 @@ When auto-patching (see below), it sometimes can be useful to tell NullAway abou
 
 ### Auto Suppressing
 
-If you pass the option `-Xep:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
+If you pass the option `-XepOpt:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
 
 You might also wish to add a comment to the suggested suppressions with `--Xep:NullAway:AutoFixSuppressionComment=\"[ some comment ]\"`. This string will be added as `/* some comment */` alongside the `@SuppressWarnings("NullAway")` annotation. Note that, when building with gradle, this string might not contain spaces. We have still found it useful for e.g. linking an issue/task number to a series of suppressions. 
