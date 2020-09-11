@@ -206,7 +206,7 @@ Here, writing `Test::instMethod` is equivalent to writing `x -> { x.instMethod()
 
 ### initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized
 
-This error indicates that a `@NonNull` field may not be properly initialized in some case.  There are two ways to initialize a `@NonNull` field: (1) in the constructors of a class, or (2) in a designated initializer method.  For the case of constructors, each `@NonNull` field must be initialized in //every// constructor (a constructor that invokes another constructor via `this(...)` is excluded).  A field can also be initialized in a method called by the constructor, provided that the method is either `private` or `final` (to prevent overriding) and the constructor invokes the method at the top-level, not under an `if` condition (to guarantee the call always executes).
+This error indicates that a `@NonNull` field may not be properly initialized in some case.  There are two ways to initialize a `@NonNull` field: (1) in the constructors of a class, or (2) in a designated initializer method.  For the case of constructors, each `@NonNull` field must be initialized in _every_ constructor (a constructor that invokes another constructor via `this(...)` is excluded).  A field can also be initialized in a method called by the constructor, provided that the method is either `private` or `final` (to prevent overriding) and the constructor invokes the method at the top-level, not under an `if` condition (to guarantee the call always executes).  NullAway only detects cases where a field is initialized via a direct call to another method from a constructor, not via a chain of calls.
 
 An example:
 ```java
