@@ -154,50 +154,70 @@ In addition to these options, NullAway will look for any classes implementing th
 
 ### Maven
 
-Here is an example Maven build configuration that pulls in Error Prone and NullAway:
+For configuring Error Prone with Maven, see [the docs](http://errorprone.info/docs/installation#maven) and [the example from the Error Prone repo](https://github.com/google/error-prone/blob/master/examples/maven/pom.xml).  It's also good to be familiar with how flags should be passed to Error Prone with Maven; see [these docs](http://errorprone.info/docs/flags#maven).
+Here is an example Maven build configuration (based on the example in the Error Prone repo) that pulls in Error Prone and NullAway:
 
 ```xml
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <javac.version>9+181-r4173-1</javac.version>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5</version>
+        <version>3.8.0</version>
         <configuration>
-          <compilerId>javac-with-errorprone</compilerId>
-          <forceJavacCompilerUse>true</forceJavacCompilerUse>
-          <source>1.8</source>
-          <target>1.8</target>
-          <showWarnings>true</showWarnings>
+          <source>8</source>
+          <target>8</target>
+          <compilerArgs>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
+          </compilerArgs>
           <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>2.4.0</version>
+            </path>
             <path>
                <groupId>com.uber.nullaway</groupId>
                <artifactId>nullaway</artifactId>
-               <version>0.3.0</version>
+               <version>0.8.0</version>
             </path>
+            <!-- Add any other annotation processors here,
+                 even if they are also on the project dependency classpath. -->
           </annotationProcessorPaths>
-          <compilerArgs>
-            <arg>-Xep:NullAway:ERROR</arg>
-            <arg>-XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
-          </compilerArgs>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-compiler-javac-errorprone</artifactId>
-            <version>2.8</version>
-          </dependency>
-          <!-- override plexus-compiler-javac-errorprone's dependency on
-               Error Prone with the latest version -->
-          <dependency>
-            <groupId>com.google.errorprone</groupId>
-            <artifactId>error_prone_core</artifactId>
-            <version>2.1.3</version>
-          </dependency>
-        </dependencies>        
       </plugin>
     </plugins>
   </build>
+
+  <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
+  <profiles>
+    <profile>
+      <id>jdk8</id>
+      <activation>
+        <jdk>1.8</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <fork>true</fork>
+              <compilerArgs combine.children="append">
+                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
+              </compilerArgs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 ```
 
 ### Bazel
