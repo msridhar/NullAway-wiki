@@ -78,7 +78,7 @@ void caller(@Nullable Object y) {
 }
 ```
 To fix, either:
-* Make sure `y` is non-null at the point `nonNullParam(y)` is called (e.g. by making the parameter `@NonNull` or adding an appropriate null check), **or**
+* Make sure `y` is non-null at the point `nonNullParam(y)` is called (e.g. by making the parameter to `caller` itself `@NonNull`, or adding an appropriate null check before `nonNullParam(y)` is called), **or**
 * Make the parameter `@Nullable` in `nonNullParam`'s definition.
 
 ### assigning @Nullable expression to @NonNull field
