@@ -77,7 +77,9 @@ void caller(@Nullable Object y) {
   nonNullParam(y); // bad!
 }
 ```
-To fix, either make the parameter `@NonNull`, place the method call under an appropriate null check for the parameter, or make the parameter `@Nullable`.
+To fix, either:
+* Make sure `y` is non-null at the point `nonNullParam(y)` is called (e.g. by making the parameter `@NonNull` or adding an appropriate null check)
+* Make the parameter `@Nullable` in `nonNullParam`'s definition.
 
 ### assigning @Nullable expression to @NonNull field
 
