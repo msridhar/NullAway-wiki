@@ -13,6 +13,7 @@ Here we explain the different warning messages that NullAway produces and how to
 * [unbound instance method reference cannot be used, as first parameter of functional interface method is @Nullable](#unbound-instance-method-reference-cannot-be-used-as-first-parameter-of-functional-interface-method-is-nullable)
 * [initializer method does not guarantee @NonNull field is initialized / @NonNull field  not initialized](#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized)
 * [read of @NonNull field before initialization](#read-of-nonnull-field-before-initialization)
+* [unboxing of a @Nullable value](#unboxing-of-a-nullable-value)
 
 ## Messages
 
@@ -298,3 +299,14 @@ class C {
 ```
 
 To fix this error, perform the initialization before reading the field.
+
+### unboxing of a @Nullable value
+
+This error is reported when some `@Nullable` expression gets [implicitly unboxed](https://docs.oracle.com/javase/tutorial/java/data/autoboxing.html) by some operation.  For example:
+
+```java
+Integer i1 = null;
+int i2 = i1 + 3; // NullPointerException
+```
+
+These errors can be fixed in the same manner as the [dereferenced expression is @Nullable](#dereferenced-expression-is-nullable) error.
