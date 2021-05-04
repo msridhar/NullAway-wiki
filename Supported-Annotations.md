@@ -31,3 +31,12 @@ public class NullnessChecker {
 For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with a `@Contract` annotation it recognizes as invalid. 
 
 Not all possible clauses of `@Contract` annotations are fully parsed or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway cannot generally reason about the runtime truth value of the second argument).
+
+### Field Contracts (postcondition and precondition)
+* Precondition: `RequiresNonnull({"class_fields"})` 
+* Postcondition: `EnsuresNonNull({"class_fields"})`
+
+The following syntax rules applies to both annotations:
+1. Cannot annotate a method with empty param set.
+2. The receiver of selected fields in annotation can only be the receiver of the method.
+3. All parameters given in the annotation must be one of the fields of the class or its super classes.
