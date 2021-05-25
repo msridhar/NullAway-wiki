@@ -32,9 +32,14 @@ For now, the `@Contract` annotations are trusted, not checked.  NullAway will wa
 
 Not all possible clauses of `@Contract` annotations are fully parsed or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway cannot generally reason about the runtime truth value of the second argument).
 
-### Field Contracts (postcondition and precondition)
+### Field Contracts (precondition and postcondition)
 * Precondition: `RequiresNonnull({"class_fields"})` 
 * Postcondition: `EnsuresNonNull({"class_fields"})`
+
+Allows to set preconditions and postconditions on class methods. 
+If a method is annotataited with `RequiresNonnull` annotation, it is allowed to assume `Nullable` fields given in the parameter are `Nonnull`.
+If a method is annotataited with `EnsuresNonnull` annotation, it must make sure that all class fields given in the parameter are `Nonnull` along all paths at exit point.
+
 
 The following syntax rules applies to both annotations:
 1. Cannot annotate a method with empty param set.
