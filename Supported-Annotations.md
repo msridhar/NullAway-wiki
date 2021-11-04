@@ -2,7 +2,7 @@ This page documents the different code annotations that are supported by NullAwa
 
 ### Nullability
 
-NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` as marking a parameter / return / field as nullable.  Checker Framework's [`@NullableDecl`](https://checkerframework.org/api/org/checkerframework/checker/nullness/compatqual/NullableDecl.html) is also supported.
+NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` as marking a parameter / return / field as nullable.  Checker Framework's [`@NullableDecl`](https://checkerframework.org/api/org/checkerframework/checker/nullness/compatqual/NullableDecl.html) and `javax.annotation.CheckForNull` are also supported.
 
 ### Initialization
 
