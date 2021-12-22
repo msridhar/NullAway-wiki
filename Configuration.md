@@ -67,7 +67,7 @@ A list of annotations that should be considered equivalent to `@Nullable` annota
 
   - `-XepOpt:NullAway:CustomNonnullAnnotations=...`
 
-A list of annotations that should be considered equivalent to `@NonNull` annotations, for the cases where NullAway cares about such annotations (see e.g. [AcknowledgeRestrictiveAnnotations](#acknowledge-android-recent-nullability-annotations)). Note that any annotation with the simple name `@NonNull`, `@NotNull`, or `@Nonnull`, from any package, will be considered a non-null annotation (and thus doesn't need to be explicitly configured), but names passed to this configuration option must be fully-qualified class names.
+A list of annotations that should be considered equivalent to `@NonNull` annotations, for the cases where NullAway cares about such annotations (see e.g. [AcknowledgeRestrictiveAnnotations](#acknowledge-more-restrictive-annotations-from-third-party-jars)). Note that any annotation with the simple name `@NonNull`, `@NotNull`, or `@Nonnull`, from any package, will be considered a non-null annotation (and thus doesn't need to be explicitly configured), but names passed to this configuration option must be fully-qualified class names.
 
 ### Custom Initializer Annotations
 
