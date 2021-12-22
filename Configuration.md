@@ -52,6 +52,23 @@ A list of annotations that cause fields to be excluded from being checked for pr
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
 
+### Custom Nullability Annotations
+[Since 0.9.3]
+
+Please note that NullAway requires no configuration to support any annotations with simple name `@Nullable` (such as `javax.annotation.Nullable` or `androidx.annotation.Nullable`) and natively supports a number of other common nullability annotations. The same is true for common variations of `@NonNull`, when relevant. See [Supported Annotations](https://github.com/uber/NullAway/wiki/Supported-Annotations). 
+
+There is also specific optional support for [Android's "Recent" Nullability Annotations](#acknowledge-android-recent-nullability-annotations), which can be configured separately. 
+
+However, if your project uses annotations with non-standard names for nullability, which aren't part of a library NullAway is aware of, you can still specify them by using the following two configuration options:
+
+  - `-XepOpt:NullAway:CustomNullableAnnotations=...`
+
+A list of annotations that should be considered equivalent to `@Nullable` annotations. Note that any annotation with the simple name `@Nullable`, from any package, will be considered a nullable annotation (and thus doesn't need to be explicitly configured), but names passed to this configuration option must be fully-qualified class names.
+
+  - `-XepOpt:NullAway:CustomNonnullAnnotations=...`
+
+A list of annotations that should be considered equivalent to `@NonNull` annotations, for the cases where NullAway cares about such annotations (see e.g. [AcknowledgeRestrictiveAnnotations](#acknowledge-android-recent-nullability-annotations)). Note that any annotation with the simple name `@NonNull`, `@NotNull`, or `@Nonnull`, from any package, will be considered a non-null annotation (and thus doesn't need to be explicitly configured), but names passed to this configuration option must be fully-qualified class names.
+
 ### Custom Initializer Annotations
 
   - `-XepOpt:NullAway:CustomInitializerAnnotations=...`
