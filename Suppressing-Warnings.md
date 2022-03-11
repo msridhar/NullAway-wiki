@@ -39,7 +39,7 @@ void foo(Map<String,String> map) {
 ```
 In real-world code, there are a variety of scenarios in which an expression can never be null, but NullAway cannot prove it, and use of `castToNonNull` is often appropriate for these cases.
 
-When auto-patching (see below), it sometimes can be useful to tell NullAway about your `castToNonNull` method. The option `-Xep:NullAway:CastToNonNullMethod=[...]` does just that, allowing NullAway to add calls to this method rather than standard suppressions in some instances. This option is rarely used, though, and needed only for auto-patching, it is not required to implement the downcast method itself.
+When auto-patching (see below), it can be useful to tell NullAway about your `castToNonNull` method. The option `-Xep:NullAway:CastToNonNullMethod=[...]` does just that, allowing NullAway to add calls to this method rather than standard suppressions in some instances.  Adding this option will also lead NullAway to emit a warning if your `castToNonNull` method is invoked with a `@NonNull` argument.
 
 ### Auto Suppressing
 
