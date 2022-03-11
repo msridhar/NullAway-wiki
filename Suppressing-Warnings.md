@@ -21,17 +21,23 @@ public static <T> T castToNonNull(@Nullable T x) {
 ```
 In the case where `x` is `null`, `castToNonNull` could throw an NPE for the greatest safety.  But, this runs the risk of introducing new failures into production code (e.g., if other code has defensive null checks even on `@NonNull` values).  Alternately, `castToNonNull` could just log the unexpected null value but then continue without failing fast, in which case the method should be annotated with `@SuppressWarnings("NullAway")`.  We do not provide a `castToNonNull` implementation with NullAway as it is quite simple and often has to integrate with a particular project's logging infrastructure.  
 
-When would you use `castToNonNull`? Consider the following example, which uses a `Map` and iterates over its `keySet()`:
+When would you use `castToNonNull`? Consider the following (contrived for simplicity) example:
 
 ```java
-for (String key : map.keySet()) {
-  // here m.get(key) cannot be null (assuming null values cannot be 
-  // stored in the map), but it is @Nullable as far as the checker can tell,
-  // as it does not yet reason about keySet()
-  Object value = castToNonNull(m.get(key));
-  ...
+boolean hasHelloKey(Map<String,String> map) {
+  return map.containsKey("hello");
+}
+void foo(Map<String,String> map) {
+  if (hasHelloKey(map)) {
+    // here map.get("hello") cannot be null (assuming null values cannot be 
+    // stored in the map), but it is @Nullable as far as the checker can tell,
+    // as it does not reason about the containsKey() call inside hasHelloKey()
+    String value = castToNonNull(map.get("hello"));
+    ...
+  }
 }
 ```
+In real-world code, there are a variety of scenarios in which an expression can never be null, but NullAway cannot prove it, and use of `castToNonNull` is often appropriate for these cases.
 
 When auto-patching (see below), it sometimes can be useful to tell NullAway about your `castToNonNull` method. The option `-Xep:NullAway:CastToNonNullMethod=[...]` does just that, allowing NullAway to add calls to this method rather than standard suppressions in some instances. This option is rarely used, though, and needed only for auto-patching, it is not required to implement the downcast method itself.
 
