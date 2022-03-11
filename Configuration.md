@@ -123,6 +123,12 @@ Also, specific method annotations can always be overridden by explicit [Library 
 
 If this flag is set to `true` *and* `-XepOpt:Nullaway:AcknowledgeRestrictiveAnnotations` is set to `true`, we treat the Android `@RecentlyNullable` annotation as `@Nullable`, and similarly for `@RecentlyNonNull`.
 
+### Specify `castToNonNull` Method
+
+  - `-XepOpt:NullAway:CastToNonNullMethod=[...]`
+
+Specifies the method being used for casting `@Nullable` expressions to `@NonNull`; see [downcasting docs](https://github.com/uber/NullAway/wiki/Suppressing-Warnings#downcasting).  When this option is passed, NullAway will emit a warning if a downcast is ever performed on an expression that is already `@NonNull`.
+
 ### Perform Exhaustive Override Checks
 
   - `-XepOpt:NullAway:ExhaustiveOverride=...`
