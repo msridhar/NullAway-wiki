@@ -117,6 +117,14 @@ Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code
 
 Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
 
+### Acknowledge Library Models of Annotated Code
+
+[Since 0.9.9]
+
+  - `-XepOpt:NullAway:AcknowledgeLibraryModelsOfAnnotatedCode=...`
+
+This option allows [library models](#library-models) to override the annotations on methods within an annotated package.  This is useful, e.g., if you want to treat Guava's `com.google.common` packages as annotated, but also want the default library models of Guava APIs (e.g., of [`Strings.isNullOrEmpty()`](https://github.com/uber/NullAway/blob/a8051cd9672e88eabeec6d29ae58c142165fb9f1/nullaway/src/main/java/com/uber/nullaway/handlers/LibraryModelsHandler.java#L520)) to still apply.
+
 ### Acknowledge Android "Recent" Nullability Annotations
 
   - `-XepOpt:Nullaway:AcknowledgeAndroidRecent=...`
