@@ -117,14 +117,6 @@ Note that e.g. an `@NonNull` annotation in [annotated](#annotated-packages) code
 
 Also, specific method annotations can always be overridden by explicit [Library Models](#library-models), which take precedence over both the optimistic defaults and any annotations in the code, whether marked as annotated or unannotated.
 
-### Acknowledge Library Models of Annotated Code
-
-[Since 0.9.9]
-
-  - `-XepOpt:NullAway:AcknowledgeLibraryModelsOfAnnotatedCode=...`
-
-This option allows [library models](#library-models) to override the annotations on methods within an annotated package.  This is useful, e.g., if you want to treat Guava's `com.google.common` packages as annotated, but also want the default library models of Guava APIs (e.g., of [`Strings.isNullOrEmpty()`](https://github.com/uber/NullAway/blob/a8051cd9672e88eabeec6d29ae58c142165fb9f1/nullaway/src/main/java/com/uber/nullaway/handlers/LibraryModelsHandler.java#L520)) to still apply.
-
 ### Acknowledge Android "Recent" Nullability Annotations
 
   - `-XepOpt:Nullaway:AcknowledgeAndroidRecent=...`
@@ -291,3 +283,16 @@ java_plugin(
 ### Other
 
 The first step is to get Error Prone running on your build, as documented [here](http://errorprone.info/docs/installation).  Then, you need to get the NullAway jar on the annotation processor path for the Javac invocations where Error Prone is running.  Finally, you need to pass the appropriate compiler arguments to configure NullAway (at the least, the `-XepOpt:NullAway:AnnotatedPackages` option).
+
+## Removed Command-Line Options
+
+### Acknowledge Library Models of Annotated Code
+
+[Only in version 0.9.9]
+
+  - `-XepOpt:NullAway:AcknowledgeLibraryModelsOfAnnotatedCode=...`
+
+This option allows [library models](#library-models) to override the annotations on methods within an annotated package.  This is useful, e.g., if you want to treat Guava's `com.google.common` packages as annotated, but also want the default library models of Guava APIs (e.g., of [`Strings.isNullOrEmpty()`](https://github.com/uber/NullAway/blob/a8051cd9672e88eabeec6d29ae58c142165fb9f1/nullaway/src/main/java/com/uber/nullaway/handlers/LibraryModelsHandler.java#L520)) to still apply.
+
+In NullAway 0.9.10+, this option is removed, and library models always override annotations on methods within an annotated packaged (i.e., the option is always on).  
+
