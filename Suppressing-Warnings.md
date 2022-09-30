@@ -6,7 +6,7 @@ You can write `@SuppressWarnings("NullAway")` on any method, field, or class to 
 
 ### Suppressing only initialization warnings
 
-You can write `@SuppressWarnings("NullAway.Init")` on a field declaration to only suppress warnings related to possibly-missing initialization of that field.
+You can write `@SuppressWarnings("NullAway.Init")` on a field declaration to only suppress warnings related to possibly-missing initialization of that field.  You can also write `@SuppressWarnings("NullAway.Init")` on a constructor to suppress initialization-related warnings for that constructor, or `@SuppressWarnings("NullAway.Init")` on a class to suppress all initialization-related warnings for the class.
 
 ### Downcasting
 
