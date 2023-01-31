@@ -79,7 +79,11 @@ A list of annotations that should be considered equivalent to `@Initializer` ann
 
   - `-XepOpt:NullAway:ExternalInitAnnotations=...`
 
-A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like [`@Table`](https://docs.datastax.com/en/drivers/java/3.2/com/datastax/driver/mapping/annotations/Table.html)), after invoking the zero-argument constructor. For any class annotated with an external-init annotation, we don't check that the zero-arg constructor initializes all non-null fields.
+A list of annotations for classes that are "externally initialized."  Tools like the [Cassandra Object Mapper](https://docs.datastax.com/en/developer/java-driver/3.2/manual/object_mapper/) do their own field initialization of objects with a certain annotation (like [`@Table`](https://docs.datastax.com/en/drivers/java/3.2/com/datastax/driver/mapping/annotations/Table.html)), after invoking the zero-argument constructor. 
+
+For any class annotated with an external-init annotation, we don't check that the _zero-arg constructor_ initializes all non-null fields.
+
+Additionally, these external-init annotations will also be acknowledged if they annotate a _zero-arg constructor_ directly, rather than the full class, with equivalent semantics to `@SuppressWarnings("NullAway.Init")` on that same constructor. Note, however, that external-init annotations will be ignored if they appear in non-zero arg constructors or non-constructor methods (e.g. initializers).
 
 ### Acknowledge Assertions As Dynamic Checks
 
