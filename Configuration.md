@@ -177,6 +177,14 @@ It is still possible to cover patterns of package names, such as:
 
 In addition to these options, NullAway will look for any classes implementing the `com.uber.nullaway.LibraryModels` interface, in the annotation processor path, and consider those as plug-in models for third-party unannotated libraries. (We search for such classes using the [ServiceLoader](https://docs.oracle.com/javase/7/docs/api/java/util/ServiceLoader.html) facility.) Models defined in such classes will be loaded in addition to the default models for common Java and Android libraries included with the checker itself. For documentation on writing such custom models, refer to the javadoc documentation for [`com.uber.nullaway.LibraryModels`](https://github.com/uber/NullAway/blob/master/nullaway/src/main/java/com/uber/nullaway/LibraryModels.java) itself.  Also see our [sample library model](https://github.com/uber/NullAway/tree/master/sample-library-model) for an example; it is pulled in and used by our sample Java module (see [the `build.gradle` file](https://github.com/uber/NullAway/blob/ac6e3e1b63d357eec5f9e32fb02b024bf9cfb1f9/sample/build.gradle#L28)).  Note that if you can edit the source code of the library, you might be able to add [`@Contract` annotations](https://github.com/uber/NullAway/wiki/Supported-Annotations#contracts) instead of writing a library model.
 
+Sometimes, it is useful to suppress some library models on a per-compilation target basis, without changing or adding custom library models classes. In these cases, it is possible to skip all Library Models (included with NullAway and custom) for a specific method, simply by passing it to the following option:
+
+  - `-XepOpt:NullAway:IgnoreLibraryModelsFor=com.example.Foo.bar,com.example.Foo.baz`
+
+This takes a list of comma-separated methods, given as their fully-qualified class name plus the method simple name. 
+
+Note that, for simplicity of dealing with command-line escaped characters and the like, there is currently no way to give the full signature of the method (i.e. the argument types) when using this option. Thus, methods passed to ``-XepOpt:NullAway:IgnoreLibraryModelsFor` will technically refer to all methods matching the given class and method name.
+
 ## Other Build Systems
 
 ### Maven
