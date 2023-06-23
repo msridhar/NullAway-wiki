@@ -6,6 +6,8 @@ NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` a
 
 For code considered annotated by NullAway, the tool assumes that the absence of a `@Nullable` annotation means the type is non-null. However, there are a number of features of NullAway, such as it's optional support for acknowledging [restrictive annotations](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-more-restrictive-annotations-from-third-party-jars) in third-party jars, which involve checking for explicit `@NonNull` annotations. For this purpose, NullAway treats any annotation whose simple (un-qualified) name is `@NonNull`, `@Nonnull`, or `@NotNull`, as denoting an explicitly non-null type.
 
+While NullAway considers non-null the default in annotated code, other tools might expect any of the above annotations. In particular, the annotation `javax.validation.constraints.NotNull` (and `@NotEmpty`) is actually used for dynamic validation of deserialized data (see https://beanvalidation.org/1.1/spec/) and is a good candidate for being added to `-XepOpt:NullAway:ExcludedFieldAnnotations=...`, since it implies external initialization of a field. 
+
 There is also [optional support](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-android-recent-nullability-annotations) for treating Android's `@RecentlyNullable` and `@RecentlyNonNull` as `@Nullable` and `@NonNull` annotations, respectively.
 
 Finally, while we strongly recommend the use of standard nullability annotations (such as `org.jspecify.nullness.Nullable` or `javax.annotation.Nullable`) for broader tool compatibility, NullAway supports configuring additional [custom nullness annotations](https://github.com/uber/NullAway/wiki/Configuration#custom-nullability-annotations).
