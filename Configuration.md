@@ -165,6 +165,13 @@ By default, NullAway does not handle assertions from test libraries. If set to `
 
 NullAway has [support for JetBrains `@Contract` annotations](https://github.com/uber/NullAway/wiki/Supported-Annotations#contracts).  By default, these annotations are trusted but not checked.  If this option is set to `true`, NullAway will check that `@Contract` annotations are valid (for the subset of `@Contract` annotations supported by NullAway).
 
+
+### Custom Contract Annotations
+
+  - `-XepOpt:NullAway:CustomContractAnnotations=...`
+
+By default, NullAway recognizes `org.jetbrains.annotations.Contract` as a [contract annotation](https://github.com/uber/NullAway/wiki/Supported-Annotations#contracts).  This option allows for specifying an additional list of annotations that should be recognized as providing contracts (with the same contract syntax as `org.jetbrains.annotations.Contract`).
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
