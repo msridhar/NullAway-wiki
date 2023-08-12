@@ -159,6 +159,12 @@ Optional handling (for both JDK and custom `Optional` classes) is currently disa
 
 By default, NullAway does not handle assertions from test libraries. If set to `true`, NullAway will handle assertions from test libraries, like `assertThat(...).isNotNull()`, and use that to reason about the possibility of null dereferences in the code that follows these assertions.
 
+### Contract Checking
+
+  - `-XepOpt:NullAway:CheckContracts=...`
+
+NullAway has [support for JetBrains `@Contract` annotations](https://github.com/uber/NullAway/wiki/Supported-Annotations#contracts).  By default, these annotations are trusted but not checked.  If this option is set to `true`, NullAway will check that `@Contract` annotations are valid (for the subset of `@Contract` annotations supported by NullAway).
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
