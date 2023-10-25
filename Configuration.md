@@ -202,70 +202,40 @@ Note that, for simplicity of dealing with command-line escaped characters and th
 
 ### Maven
 
-For configuring Error Prone with Maven, see [the docs](http://errorprone.info/docs/installation#maven) and [the example from the Error Prone repo](https://github.com/google/error-prone/blob/master/examples/maven/pom.xml).  It's also good to be familiar with how flags should be passed to Error Prone with Maven; see [these docs](http://errorprone.info/docs/flags#maven).
-Here is an example Maven build configuration (based on the example in the Error Prone repo) that pulls in Error Prone and NullAway:
+For configuring Error Prone with Maven, see [the docs](http://errorprone.info/docs/installation#maven).  It's also good to be familiar with how flags should be passed to Error Prone with Maven; see [these docs](http://errorprone.info/docs/flags#maven).
+Here is an example Maven build configuration (based on [the Error Prone example](https://errorprone.info/docs/installation#maven)) that pulls in Error Prone and NullAway:
 
 ```xml
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <javac.version>9+181-r4173-1</javac.version>
-  </properties>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
+        <version>3.11.0</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>11</source>
+          <target>11</target>
+          <encoding>UTF-8</encoding>
           <compilerArgs>
             <arg>-XDcompilePolicy=simple</arg>
-            <arg>-Xplugin:ErrorProne -Xep:NullAway:ERROR -XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
+            <arg>-Xplugin:ErrorProne -XepOpt:NullAway:AnnotatedPackages=com.uber</arg>
           </compilerArgs>
           <annotationProcessorPaths>
             <path>
               <groupId>com.google.errorprone</groupId>
               <artifactId>error_prone_core</artifactId>
-              <version>2.4.0</version>
+              <version>2.23.0</version>
             </path>
             <path>
-               <groupId>com.uber.nullaway</groupId>
-               <artifactId>nullaway</artifactId>
-               <version>0.8.0</version>
+              <groupId>com.uber.nullaway</groupId>
+              <artifactId>nullaway</artifactId>
+              <version>0.10.15</version>
             </path>
-            <!-- Add any other annotation processors here,
-                 even if they are also on the project dependency classpath. -->
           </annotationProcessorPaths>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
-  <!-- using github.com/google/error-prone-javac is required when running on JDK 8 -->
-  <profiles>
-    <profile>
-      <id>jdk8</id>
-      <activation>
-        <jdk>1.8</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <fork>true</fork>
-              <compilerArgs combine.children="append">
-                <arg>-J-Xbootclasspath/p:${settings.localRepository}/com/google/errorprone/javac/${javac.version}/javac-${javac.version}.jar</arg>
-              </compilerArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 ```
 
 ### Bazel
