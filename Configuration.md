@@ -172,6 +172,12 @@ NullAway has [support for JetBrains `@Contract` annotations](https://github.com/
 
 By default, NullAway recognizes `org.jetbrains.annotations.Contract` as a [contract annotation](https://github.com/uber/NullAway/wiki/Supported-Annotations#contracts).  This option allows for specifying an additional list of annotations that should be recognized as providing contracts (with the same contract syntax as `org.jetbrains.annotations.Contract`).
 
+### Extra Futures Classes
+
+  - `-XepOpt:NullAway:ExtraFuturesClasses=...`
+
+NullAway currently has temporary special support for reasoning about callbacks passed to Guava's `Futures` and `FluentFuture` classes; see https://github.com/uber/NullAway/pull/771.  This option allows for specifying an additional list of classes that should be recognized as equivalent to those two Guava classes.  This special support will likely be removed once NullAway's JSpecify support is more complete.
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
