@@ -10,7 +10,7 @@ While NullAway considers non-null the default in annotated code, other tools mig
 
 There is also [optional support](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-android-recent-nullability-annotations) for treating Android's `@RecentlyNullable` and `@RecentlyNonNull` as `@Nullable` and `@NonNull` annotations, respectively.
 
-Finally, while we strongly recommend the use of standard nullability annotations (such as `org.jspecify.nullness.Nullable` or `javax.annotation.Nullable`) for broader tool compatibility, NullAway supports configuring additional [custom nullness annotations](https://github.com/uber/NullAway/wiki/Configuration#custom-nullability-annotations).
+Finally, while we strongly recommend the use of standard nullability annotations (such as `org.jspecify.annotations.Nullable` or `javax.annotation.Nullable`) for broader tool compatibility, NullAway supports configuring additional [custom nullness annotations](https://github.com/uber/NullAway/wiki/Configuration#custom-nullability-annotations).
 
 ### Initialization
 
