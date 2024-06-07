@@ -39,3 +39,7 @@ public class NullnessChecker {
 For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with a `@Contract` annotation it recognizes as invalid. 
 
 Not all possible clauses of `@Contract` annotations are fully parsed or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway cannot generally reason about the runtime truth value of the second argument).
+
+### `@NullMarked` and `@NullUnmarked`
+
+NullAway supports the JSpecify [`@NullMarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullMarked.html) and [`@NullUnmarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullUnmarked.html) annotations; see the linked Javadoc for further details.  Annotating a class / method as `@NullMarked` means that its APIs are treated as annotated for nullness, while `@NullUnmarked` means the APIs are treated as unannotated.  Additionally, NullAway does not perform checks within `@NullUnmarked` code.  By default, classes within specified [annotated packages](https://github.com/uber/NullAway/wiki/Configuration#annotated-packages) are treated as `@NullMarked` and classes outside those packages are treated as `@NullUnmarked`.  An individual method within a `@NullMarked` class may be annotated as `@NullUnmarked`.
