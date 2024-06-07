@@ -109,6 +109,12 @@ Setting `AssertsEnabled=true` overrides this behavior and makes NullAway assume 
 
 If set to `true`, NullAway treats any class annotated with `@Generated` as if its APIs are unannotated when analyzing uses from other classes.  It also does not perform analysis on the code inside `@Generated` classes.  If you can modify the code generator such that at least the APIs of `@Generated` classes are annotated correctly, we recommend using the `-XepOpt:NullAway:ExcludedClassAnnotations` option instead.  Defaults to `false`.
 
+### Custom Generated Code Annotations
+
+  - `-XepOpt:NullAway:CustomGeneratedCodeAnnotations=...`
+
+A list of annotations that should be considered as marking code as generated.  Note that any annotation with the simple name `@Generated`, from any package, will be considered marking code as generated, but names passed to this configuration option must be fully-qualified class names.  Useful in conjunction with the `TreatGeneratedAsUnannotated` option.
+
 ### Acknowledge More Restrictive Annotations from Third-Party Jars
 
   - `-XepOpt:NullAway:AcknowledgeRestrictiveAnnotations=...`
