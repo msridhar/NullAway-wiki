@@ -6,4 +6,5 @@ Welcome to the NullAway wiki!  We currently have documentation on the following 
 * [[Supported Annotations]]
 * [[Suppressing Warnings]]
 * [[Stream Handling]]
+* [[JSpecify Support]]
 * [[How NullAway Works]]
