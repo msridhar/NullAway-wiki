@@ -1,0 +1,10 @@
+[JSpecify](https://jspecify.dev) is an effort to standardize annotations for Java static analysis, and [JSpecify 1.0](https://jspecify.dev/blog/release-1.0.0/) includes nullability annotations.  Out of the box, NullAway supports JSpecify annotations in its standard mode of checking.  If you are a current NullAway user, you should just be able to swap in JSpecify annotations for whatever nullability annotations you were using before, and you should not get any new NullAway errors.  (If you see problems, please report an issue.)  One caveat is that in an upcoming release, NullAway will by default require that JSpecify annotations be written in the correct place on qualified and array types (see [here](https://jspecify.dev/docs/user-guide/#type-use-annotation-syntax)).  This may lead to new errors, but we will provide a compatibility flag (to be removed eventually) to run NullAway without this new enforcement.
+
+We are also working on adding support for [full JSpecify semantics](https://jspecify.dev/docs/spec/) for these annotations, including annotations on generic types.  You can enable our work-in-progress checking by passing the configuration flag `-XepOpt:NullAway:JSpecifyMode=true` when running NullAway.  This mode is still very much under development and may crash or report false positive warnings on your code.  Please report these cases and we will address them.  Major outstanding features still to be supported include:
+
+* pulling in JDK annotations from https://github.com/jspecify/jdk.  This will enable much better checking of uses of types like `Collection`s.
+* generic methods
+* wildcard types
+* checking of generic class implementations (i.e., checking that generic type variables are used correctly).  Thus far we have focused on supporting uses of generic classes, but not on checking their internals.
+
+Not supporting the above features may lead to false negatives (missed issues).  We are slowly working towards supporting them, and any help from the community is appreciated, from issue reports to pull requests.
