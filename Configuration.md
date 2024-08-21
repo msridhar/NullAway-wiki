@@ -208,7 +208,7 @@ Sometimes, it is useful to suppress some library models on a per-compilation tar
 
 This takes a list of comma-separated methods, given as their fully-qualified class name plus the method simple name. 
 
-Note that, for simplicity of dealing with command-line escaped characters and the like, there is currently no way to give the full signature of the method (i.e. the argument types) when using this option. Thus, methods passed to ``-XepOpt:NullAway:IgnoreLibraryModelsFor` will technically refer to all methods matching the given class and method name.
+Note that, for simplicity of dealing with command-line escaped characters and the like, there is currently no way to give the full signature of the method (i.e. the argument types) when using this option. Thus, methods passed to `-XepOpt:NullAway:IgnoreLibraryModelsFor` will technically refer to all methods matching the given class and method name.
 
 ## Other Build Systems
 
