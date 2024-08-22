@@ -8,3 +8,5 @@ We are also working on adding support for [full JSpecify semantics](https://jspe
 * checking of generic class implementations (i.e., checking that generic type variables are used correctly).  Thus far we have focused on supporting uses of generic classes, but not on checking their internals.
 
 Not supporting the above features may lead to false negatives (missed issues).  We are slowly working towards supporting them, and any help from the community is appreciated, from issue reports to pull requests.
+
+When building with JSpecify mode enabled, we strongly recommend compiling using the most recent released JDK build (JDK 22.0.2 as of 2024-08-22).  Bugs in javac related to visibility of JSpecify annotations are actively being fixed, and these bug fixes currently have an impact on NullAway's support for JSpecify semantics.  See [this discussion](https://jspecify.dev/docs/whether/#annotation-processors) of using annotation processors with JSpecify for details of one relevant issue, and also https://github.com/uber/NullAway/issues/1005 and https://github.com/uber/NullAway/issues/1022.
