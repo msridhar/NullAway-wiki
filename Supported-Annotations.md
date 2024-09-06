@@ -45,16 +45,16 @@ Not all possible clauses of `@Contract` annotations are fully parsed or supporte
 NullAway supports the JSpecify [`@NullMarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullMarked.html) and [`@NullUnmarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullUnmarked.html) annotations; see the linked Javadoc for further details.  Annotating a class / method as `@NullMarked` means that its APIs are treated as annotated for nullness, while `@NullUnmarked` means the APIs are treated as unannotated.  Additionally, NullAway does not perform checks within `@NullUnmarked` code.  By default, classes within specified [annotated packages](https://github.com/uber/NullAway/wiki/Configuration#annotated-packages) are treated as `@NullMarked` and classes outside those packages are treated as `@NullUnmarked`.  An individual method within a `@NullMarked` class may be annotated as `@NullUnmarked`.
 
 ### Field Contracts (precondition and postcondition)
-* Precondition: `RequiresNonnull({"class_fields"})` 
-* Postcondition: `EnsuresNonNull({"class_fields"})`
+* Precondition: `@RequiresNonnull({"class_fields"})`
+* Postcondition: `@EnsuresNonNull({"class_fields"})`
 
-Allows to set preconditions and postconditions on class methods. 
-If a method is annotataited with `RequiresNonnull` annotation, it is allowed to assume `Nullable` fields given in the parameter are `Nonnull`.
-If a method is annotataited with `EnsuresNonnull` annotation, it must make sure that all class fields given in the parameter are `Nonnull` along all paths at exit point.
+These annotations enable setting preconditions and postconditions on class methods regarding nullability of class fields.
+If a method is annotatated with `@RequiresNonnull`, NullAway assumes that `@Nullable` fields given in the annotation parameter are `@NonNull` while checking the method body, and ensures those fields are `@NonNull` at all call sites.
+If a method is annotataited with `@EnsuresNonnull`, it must make sure that all class fields given in the annotation parameter are `@NonNull` in all executions that do not end in throwing an exception.
 
+The following syntax rules apply to both annotations:
+1. At least one field must be specified.
+2. The receiver of the listed fields can only be the receiver of the method.
+3. All parameters given in the annotation must a field of the enclosing class (directly declared or inherited).
 
-The following syntax rules applies to both annotations:
-1. Cannot annotate a method with empty param set.
-2. The receiver of selected fields in annotation can only be the receiver of the method.
-3. All parameters given in the annotation must be one of the fields of the class or its super classes.
-
+See the [error messages page](#method-is-annotated-with-EnsuresNonNull-annotation-it-indicates-that-all-fields-in-the-annotation-parameter-must-be-guaranteed-to-be-nonnull-at-exit-point-However-the-method's-body-fails-to-ensure-this-for-the-following-fields) for further details on checking of these annotations.
