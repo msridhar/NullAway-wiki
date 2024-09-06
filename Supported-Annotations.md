@@ -2,7 +2,15 @@ This page documents the different code annotations that are supported by NullAwa
 
 ### Nullability
 
-NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` as marking a parameter / return / field as nullable.  Checker Framework's [`@NullableDecl`](https://checkerframework.org/api/org/checkerframework/checker/nullness/compatqual/NullableDecl.html) is also supported.
+NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` as marking a parameter / return / field as nullable.  Checker Framework's [`@NullableDecl`](https://checkerframework.org/api/org/checkerframework/checker/nullness/compatqual/NullableDecl.html) and `javax.annotation.CheckForNull` are also supported.
+
+For code considered annotated by NullAway, the tool assumes that the absence of a `@Nullable` annotation means the type is non-null. However, there are a number of features of NullAway, such as it's optional support for acknowledging [restrictive annotations](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-more-restrictive-annotations-from-third-party-jars) in third-party jars, which involve checking for explicit `@NonNull` annotations. For this purpose, NullAway treats any annotation whose simple (un-qualified) name is `@NonNull`, `@Nonnull`, or `@NotNull`, as denoting an explicitly non-null type.
+
+While NullAway considers non-null the default in annotated code, other tools might expect any of the above annotations. In particular, the annotation `javax.validation.constraints.NotNull` (and `@NotEmpty`) is actually used for dynamic validation of deserialized data (see https://beanvalidation.org/1.1/spec/) and is a good candidate for being added to `-XepOpt:NullAway:ExcludedFieldAnnotations=...`, since it implies external initialization of a field. 
+
+There is also [optional support](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-android-recent-nullability-annotations) for treating Android's `@RecentlyNullable` and `@RecentlyNonNull` as `@Nullable` and `@NonNull` annotations, respectively.
+
+Finally, while we strongly recommend the use of standard nullability annotations (such as `org.jspecify.annotations.Nullable` or `javax.annotation.Nullable`) for broader tool compatibility, NullAway supports configuring additional [custom nullness annotations](https://github.com/uber/NullAway/wiki/Configuration#custom-nullability-annotations).
 
 ### Initialization
 
@@ -32,6 +40,10 @@ For now, the `@Contract` annotations are trusted, not checked.  NullAway will wa
 
 Not all possible clauses of `@Contract` annotations are fully parsed or supported by NullAway (e.g. `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway cannot generally reason about the runtime truth value of the second argument).
 
+### `@NullMarked` and `@NullUnmarked`
+
+NullAway supports the JSpecify [`@NullMarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullMarked.html) and [`@NullUnmarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullUnmarked.html) annotations; see the linked Javadoc for further details.  Annotating a class / method as `@NullMarked` means that its APIs are treated as annotated for nullness, while `@NullUnmarked` means the APIs are treated as unannotated.  Additionally, NullAway does not perform checks within `@NullUnmarked` code.  By default, classes within specified [annotated packages](https://github.com/uber/NullAway/wiki/Configuration#annotated-packages) are treated as `@NullMarked` and classes outside those packages are treated as `@NullUnmarked`.  An individual method within a `@NullMarked` class may be annotated as `@NullUnmarked`.
+
 ### Field Contracts (precondition and postcondition)
 * Precondition: `RequiresNonnull({"class_fields"})` 
 * Postcondition: `EnsuresNonNull({"class_fields"})`
@@ -45,3 +57,4 @@ The following syntax rules applies to both annotations:
 1. Cannot annotate a method with empty param set.
 2. The receiver of selected fields in annotation can only be the receiver of the method.
 3. All parameters given in the annotation must be one of the fields of the class or its super classes.
+
