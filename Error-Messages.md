@@ -333,7 +333,7 @@ class C {
     if(b){
       foo = new Object();
     }
-    //Here the "foo" is not garanteed to be @Nonull at exit point and it depends on the value of "b".
+    //Here the "foo" is not guaranteed to be @NonNull at exit point and it depends on the value of "b".
   }
 }
 ```
