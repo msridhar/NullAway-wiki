@@ -4,7 +4,7 @@ This page documents the different code annotations that are supported by NullAwa
 
 NullAway treats any annotation whose simple (un-qualified) name is `@Nullable` as marking a parameter / return / field as nullable.  Checker Framework's [`@NullableDecl`](https://checkerframework.org/api/org/checkerframework/checker/nullness/compatqual/NullableDecl.html) and `javax.annotation.CheckForNull` are also supported.
 
-For code considered annotated by NullAway, the tool assumes that the absence of a `@Nullable` annotation means the type is non-null. However, there are a number of features of NullAway, such as it's optional support for acknowledging [restrictive annotations](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-more-restrictive-annotations-from-third-party-jars) in third-party jars, which involve checking for explicit `@NonNull` annotations. For this purpose, NullAway treats any annotation whose simple (un-qualified) name is `@NonNull`, `@Nonnull`, or `@NotNull`, as denoting an explicitly non-null type.
+For code considered annotated by NullAway, the tool assumes that the absence of a `@Nullable` annotation means the type is non-null. However, there are a number of features of NullAway, such as it's optional support for acknowledging [restrictive annotations](https://github.com/uber/NullAway/wiki/Configuration#acknowledge-more-restrictive-annotations-from-third-party-jars) in third-party jars, which involve checking for explicit `@NonNull` annotations. For this purpose, NullAway treats any annotation whose simple (un-qualified) name is `@NonNull`, `@NonNull`, or `@NotNull`, as denoting an explicitly non-null type.
 
 While NullAway considers non-null the default in annotated code, other tools might expect any of the above annotations. In particular, the annotation `javax.validation.constraints.NotNull` (and `@NotEmpty`) is actually used for dynamic validation of deserialized data (see https://beanvalidation.org/1.1/spec/) and is a good candidate for being added to `-XepOpt:NullAway:ExcludedFieldAnnotations=...`, since it implies external initialization of a field. 
 
@@ -43,3 +43,18 @@ Not all possible clauses of `@Contract` annotations are fully parsed or supporte
 ### `@NullMarked` and `@NullUnmarked`
 
 NullAway supports the JSpecify [`@NullMarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullMarked.html) and [`@NullUnmarked`](https://jspecify.dev/docs/api/org/jspecify/annotations/NullUnmarked.html) annotations; see the linked Javadoc for further details.  Annotating a class / method as `@NullMarked` means that its APIs are treated as annotated for nullness, while `@NullUnmarked` means the APIs are treated as unannotated.  Additionally, NullAway does not perform checks within `@NullUnmarked` code.  By default, classes within specified [annotated packages](https://github.com/uber/NullAway/wiki/Configuration#annotated-packages) are treated as `@NullMarked` and classes outside those packages are treated as `@NullUnmarked`.  An individual method within a `@NullMarked` class may be annotated as `@NullUnmarked`.
+
+### Field Contracts (precondition and postcondition)
+* Precondition: `@RequiresNonNull({"class_fields"})`
+* Postcondition: `@EnsuresNonNull({"class_fields"})`
+
+These annotations enable setting preconditions and postconditions on class methods regarding nullability of receiver fields.
+If a method is annotated with `@RequiresNonNull`, NullAway assumes that `@Nullable` fields given in the annotation parameter are `@NonNull` while checking the method body, and ensures those fields are `@NonNull` at all call sites.
+If a method is annotated with `@EnsuresNonNull`, it must make sure that all class fields given in the annotation parameter are `@NonNull` in all executions that do not end in throwing an exception.  This information is used for more precise analysis of callers of the method.
+
+The following syntax rules apply to both annotations:
+1. At least one field must be specified.
+2. The receiver of the listed fields can only be the receiver of the method.
+3. All parameters given in the annotation must a field of the enclosing class (directly declared or inherited).
+
+See the [error messages page](#method-is-annotated-with-EnsuresNonNull-annotation-it-indicates-that-all-fields-in-the-annotation-parameter-must-be-guaranteed-to-be-nonnull-at-exit-point-However-the-method's-body-fails-to-ensure-this-for-the-following-fields) for further details on checking of these annotations.
