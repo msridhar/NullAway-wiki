@@ -57,4 +57,4 @@ The following syntax rules apply to both annotations:
 2. The receiver of the listed fields can only be the receiver of the method.
 3. All parameters given in the annotation must a field of the enclosing class (directly declared or inherited).
 
-See the [error messages page](#method-is-annotated-with-EnsuresNonNull-annotation-it-indicates-that-all-fields-in-the-annotation-parameter-must-be-guaranteed-to-be-nonnull-at-exit-point-However-the-method's-body-fails-to-ensure-this-for-the-following-fields) for further details on checking of these annotations.
+See the [error messages page](https://github.com/uber/NullAway/wiki/Error-Messages#method-is-annotated-with-ensuresnonnull-but-fails-to-ensure-the-following-fields-are-non-null-at-exit) for further details on checking of these annotations.
