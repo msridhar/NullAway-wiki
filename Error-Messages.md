@@ -20,7 +20,9 @@ Here we explain the different warning messages that NullAway produces and how to
 * [currently @RequiresNonNull/@EnsuresNonNull supports only class fields of the method receiver: fieldName is not supported](#currently-requiresnonnullensuresnonnull-supports-only-class-fields-of-the-method-receiver-fieldname-is-not-supported)
 * [for @RequiresNonNull/@EnsuresNonNull annotation, cannot find instance field in class](#for-requiresnonnullensuresnonnull-annotation-cannot-find-instance-field-in-class)
 * [postcondition inheritance is violated, this method must guarantee that all fields written in the @EnsuresNonNull annotation of overridden method are @NonNull at exit point as well. Fields must explicitly appear as parameters at this method @EnsuresNonNull annotation](#postcondition-inheritance-is-violated-this-method-must-guarantee-that-all-fields-written-in-the-ensuresnonnull-annotation-of-overridden-method-are-nonnull-at-exit-point-as-well-fields-must-explicitly-appear-as-parameters-at-this-method-ensuresnonnull-annotation)       
-* [precondition inheritance is violated, method in child class cannot have a stricter precondition than its closest overridden method, adding @requiresNonNull for fields makes this method precondition stricter](#precondition-inheritance-is-violated-method-in-child-class-cannot-have-a-stricter-precondition-than-its-closest-overridden-method-adding-requiresnonnull-for-fields-makes-this-method-precondition-stricter)
+* [precondition inheritance is violated, method in child class cannot have a stricter precondition than its closest overridden method, adding @RequiresNonNull for fields makes this method precondition stricter](#precondition-inheritance-is-violated-method-in-child-class-cannot-have-a-stricter-precondition-than-its-closest-overridden-method-adding-requiresnonnull-for-fields-makes-this-method-precondition-stricter)
+* [Method is annotated with @EnsuresNonNullIf but does not ensure fields: fieldNames](#method-is-annotated-with-ensuresnonnullif-but-does-not-ensure-fields)
+* [Method is annotated with @EnsuresNonNullIf but does not return boolean](method-is-annotated-with-ensuresnonnullif-but-does-not-return-boolean)
 
 ## Messages
 
@@ -607,3 +609,42 @@ class C extends Super{
 
 To fix this error, remove `foo` as a parameter to `@RequiresNonNull` annotation on the `C.Requires` method.
 
+### Method is annotated with @EnsuresNonNullIf but does not ensure fields
+
+This error happens when the method annotated with `@EnsuresNonNullIf` doesn't ensure the non-nullability of the passed fields. For example:
+
+```
+class Foo {
+  @Nullable private Object item;
+
+  @EnsuresNonNullIf("item")
+  public boolean hasItem() {
+    // Error here
+    // This is wrongly implemented, as the method returns true but item is nullable
+    return item == null;
+  }
+
+  public void operation() {
+    if(!hasItem()) {
+      return;
+    }
+
+    // from here on, item is assumed to be non-null
+  }
+}
+```
+
+### Method is annotated with @EnsuresNonNullIf but does not return boolean
+
+This error happens when the method annotated with `@EnsuresNonNullIf` doesn't return boolean. For example:
+
+```
+class Foo {
+  @Nullable private Object item;
+
+  @EnsuresNonNullIf("item")
+  public void hasItem() {
+    // ERROR: this method should return boolean
+  }
+}
+```

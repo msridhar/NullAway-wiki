@@ -58,3 +58,31 @@ The following syntax rules apply to both annotations:
 3. All parameters given in the annotation must a field of the enclosing class (directly declared or inherited).
 
 See the [error messages page](https://github.com/uber/NullAway/wiki/Error-Messages#method-is-annotated-with-ensuresnonnull-but-fails-to-ensure-the-following-fields-are-non-null-at-exit) for further details on checking of these annotations.
+
+### `@EnsuresNonNullIf`
+
+The annotation allows you to define methods that checks the non-nullability of fields. The annotation `@EnsuresNonNullIf` offers two parameters:
+
+1. The required `value` parameter, which should declare the list of fields the method ensures the non-nullability
+2. The optional boolean `result` parameter, which indicates the boolean returned by the method when fields are non-null. The default value is `true`.
+
+See the example below. The method `hasItem` is annotated with `@EnsuresNonNullIf`. It lists `item` as the field that it checks for nullability. The method returns `true` in case the `item` is not null. The `operation` method can now make use of `hasItem()` to ensure that `item` isn't null.
+
+```
+class Foo {
+	@Nullable private Object item;
+
+	@EnsuresNonNullIf("item")
+	public boolean hasItem() {
+		return item != null;
+	}
+
+	public void operation() {
+		if(!hasItem()) {
+			return;
+		}
+
+		// from here on, item is assumed to be non-null
+	}
+}
+```
