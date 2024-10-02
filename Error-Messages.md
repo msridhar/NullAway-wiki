@@ -16,9 +16,9 @@ Here we explain the different warning messages that NullAway produces and how to
 * [unboxing of a @Nullable value](#unboxing-of-a-nullable-value)
 * [method is annotated with @EnsuresNonNull annotation, it indicates that all fields in the annotation parameter must be guaranteed to be nonnull at exit point. However, the method's body fails to ensure this for the following fields](#method-is-annotated-with-EnsuresNonNull-annotation-it-indicates-that-all-fields-in-the-annotation-parameter-must-be-guaranteed-to-be-nonnull-at-exit-point-However-the-method's-body-fails-to-ensure-this-for-the-following-fields)
 * [expected field to be non-null at call site](#Expected-field-to-be-non-null-at-call-site)
-* [empty @RequiresNonnull/@EnsuresNonnull is the default precondition for every method, please remove it](#empty-RequiresNonnull/EnsuresNonnull-is-the-default-precondition-for-every-method-please-remove-it)
-* [currently @RequiresNonnull/@EnsuresNonnull supports only class fields of the method receiver: fieldName is not supported](#currently-RequiresNonnull/EnsuresNonnull-supports-only-class-fields-of-the-method-receiver-fieldName-is-not-supported)
-* [for @RequiresNonnull/@EnsuresNonnull annotation, cannot find instance field in class](#for-RequiresNonnull/EnsuresNonnull-annotation-cannot-find-instance-field-in-class)
+* [empty @RequiresNonNull/@EnsuresNonNull is the default precondition for every method, please remove it](#empty-RequiresNonNull/EnsuresNonNull-is-the-default-precondition-for-every-method-please-remove-it)
+* [currently @RequiresNonNull/@EnsuresNonNull supports only class fields of the method receiver: fieldName is not supported](#currently-RequiresNonNull/EnsuresNonNull-supports-only-class-fields-of-the-method-receiver-fieldName-is-not-supported)
+* [for @RequiresNonNull/@EnsuresNonNull annotation, cannot find instance field in class](#for-RequiresNonNull/EnsuresNonNull-annotation-cannot-find-instance-field-in-class)
 * [postcondition inheritance is violated, this method must guarantee that all fields written in the @EnsuresNonNull annotation of overridden method are @NonNull at exit point as well. Fields must explicitly appear as parameters at this method @EnsuresNonNull annotation](#postcondition-inheritance-is-violated-this-method-must-guarantee-that-all-fields-written-in-the-EnsuresNonNull-annotation-of-overridden-method-are-NonNull-at-exit-point-as-well-Fields-must-explicitly-appear-as-parameters-at-this-method-EnsuresNonNull-annotation)       
 * [precondition inheritance is violated, method in child class cannot have a stricter precondition than its closest overridden method, adding @requiresNonNull for fields makes this method precondition stricter](#precondition-inheritance-is-violated-method-in-child-class-cannot-have-a-stricter-precondition-than-its-closest-overridden-method-adding-requiresNonNull-for-fields-makes-this-method-precondition-stricter)
 
@@ -318,8 +318,9 @@ int i2 = i1 + 3; // NullPointerException
 
 These errors can be fixed in the same manner as the [dereferenced expression is @Nullable](#dereferenced-expression-is-nullable) error.
 
-### method is annotated with @EnsuresNonNull annotation, it indicates that all fields in the annotation parameter must be guaranteed to be nonnull at exit point. However, the method's body fails to ensure this for the following fields
-This error is reported when a method annotated with `@EnsuresNonnull` and a field mentioned in the annotations parameters is not guaranteed to be `@Nonnull` at all exit points.
+### Method is annotated with @EnsuresNonNull but fails to ensure the following fields are non-null at exit
+
+This error is reported when a method is annotated with `@EnsuresNonNull` and a field mentioned in the annotation's parameters is not guaranteed to be `@NonNull` at all exit points.
 
 Please see the example below where this error will be reported.
 
@@ -328,21 +329,21 @@ class C {
 
   Object foo;
   
-  @EnsuresNonnull("foo")
+  @EnsuresNonNull("foo")
   C(boolean b) {
     if(b){
       foo = new Object();
     }
-    //Here the "foo" is not guaranteed to be @NonNull at exit point and it depends on the value of "b".
+    // Here foo may still be null
   }
 }
 ```
 
-To fix this error, either make sure `foo` is initialized along all paths of the constructor at the exit point or remove the `@EnsuresNonnull` annotation.
+To fix this error, either make sure `foo` is initialized along all paths of the constructor at the exit point or remove the `@EnsuresNonNull` annotation.
 
-### Expected field to be non-null at call site
+### Expected field to be non-null at call site due to @RequiresNonNull annotation on invoked method
 
-This error is indicates, that the called method is annotated with `@RequiresNonnull` and expects a certain class fields given in the `@RequiresNonnull` parameter to be `@Nonnull` at this call site where this condition is violated.
+This error indicates that the called method is annotated with `@RequiresNonNull` and expects a certain class fields given in the `@RequiresNonNull` parameter to be `@NonNull` before the call.
 
 Please see the example below where this error will be reported.
 
@@ -352,13 +353,13 @@ class C {
   @Nullable Object foo;
   
   //this methods ensures class field "foo" to be non-null at exit point.
-  @EnsuresNonnull("foo")
-  void ensuresNonnullFoo() {
+  @EnsuresNonNull("foo")
+  void ensuresNonNullFoo() {
     foo = new Object();
   }
 
   //this methods requires class field "foo" to be non-null at call site.
-  @RequiresNonnull("foo")
+  @RequiresNonNull("foo")
   String requiresFoo(){ 
     return foo.toString();
   }
@@ -369,9 +370,9 @@ class C {
     requiresFoo()
   }   
 
-  //class field "foo" is non-null via call to "ensuresNonnullFoo" at call site of "requiresFoo", hence no error will be reported.
+  //class field "foo" is non-null via call to "ensuresNonNullFoo" at call site of "requiresFoo", hence no error will be reported.
   void test2(){ 
-    ensuresNonnullFoo()
+    ensuresNonNullFoo()
     requiresFoo()
   }
 
@@ -382,11 +383,11 @@ class C {
 }
 ```
 
-To fix this error, either make sure `foo` is non-null at call site of `requiresFoo`.
+To fix this error, make sure the reported field is guaranteed to be non-null before the call.
 
 
-### empty @RequiresNonnull/@EnsuresNonnull is the default precondition for every method, please remove it
-Empty `@RequiresNonnull` and `@EnsuresNonnull` is the default type for all methods. Therefore we report an error on such cases to keep the code simple.
+### empty @RequiresNonNull/@EnsuresNonNull is the default precondition for every method, please remove it
+Empty `@RequiresNonNull` and `@EnsuresNonNull` is the default type for all methods. Therefore we report an error on such cases to keep the code simple.
 
 Please see the example below where this error will be reported.
 ```java
@@ -394,25 +395,25 @@ class C {
 
   Object foo;
   
-  @EnsuresNonnull() //Here the following error will be reported since no class field is given in parameters
+  @EnsuresNonNull() //Here the following error will be reported since no class field is given in parameters
   void ensures(){
 
   }
 
-  @RequiresNonnull() //Here the following error will be reported since no class field is given in parameters
+  @RequiresNonNull() //Here the following error will be reported since no class field is given in parameters
   void requires(){
 
   }
 }
 ```
 
-To fix this error, smiply remove the empty `@RequiresNonnull` or `@EnsuresNonnull` annotation.
+To fix this error, smiply remove the empty `@RequiresNonNull` or `@EnsuresNonNull` annotation.
 
 
-### currently @RequiresNonnull/@EnsuresNonnull supports only class fields of the method receiver: fieldName is not supported
+### currently @RequiresNonNull/@EnsuresNonNull supports only class fields of the method receiver: fieldName is not supported
 This error indicates that the annotation parameter is violating the following syntax rule:
 ```
-The receiver of selected fields in annotation can only be the receiver of the method
+The annotation may only refer to fields of the receiver object.
 ```
 Please see the example below where this error will be reported.
 ```java
@@ -421,24 +422,24 @@ class C {
   Object foo;
   C other;
   
-  @EnsuresNonnull("other.foo") // error: can only be either "foo" or "this.foo"
+  @EnsuresNonNull("other.foo") // error: can only be either "foo" or "this.foo"
   void ensures(){
 
   }
 
-  @RequiresNonnull("other.foo") // error: can only be either "foo" or "this.foo"
+  @RequiresNonNull("other.foo") // error: can only be either "foo" or "this.foo"
   void requires(){
 
   }
 }
 ```
 While we are considering supporting such syntax in the future, right now NullAway isn't able to gain any information from such annotation. 
-To reduce developer confusion we choose to error on them, rather than silently ignore them.
+To reduce developer confusion we choose to report an error.
 
-### for @RequiresNonnull/@EnsuresNonnull annotation, cannot find instance field in class
+### for @RequiresNonNull/@EnsuresNonNull annotation, cannot find instance field in class
 This error indicates that the annotation parameter is violating the following syntax rule:
 ```
-All parameters given in the annotation must be one of the fields of the class or its super classes.
+All parameters given in the annotation must be one of the fields of the containing class or its super classes.
 ```
 Please see the example below where this error will be reported.
 
@@ -451,17 +452,17 @@ class C extends Super{
 
   Object foo;
   
-  @EnsuresNonnull("foo") // no error: field is present in "C"
+  @EnsuresNonNull("foo") // no error: field is present in "C"
   void ensures(){
     foo = new Object();
   }
 
-  @RequiresNonnull("bar") // no error: field is present in super class "Super"
+  @RequiresNonNull("bar") // no error: field is present in super class "Super"
   void requiresBar(){
     //not important
   }
 
-  @RequiresNonnull("tmp") // error: field is not present in this class or any of it's super classes.
+  @RequiresNonNull("tmp") // error: field is not present in this class or any of it's super classes.
   void requiresTmp(){
     //not important
   }
@@ -470,7 +471,7 @@ class C extends Super{
 
 ### postcondition inheritance is violated, this method must guarantee that all fields written in the @EnsuresNonNull annotation of overridden method are @NonNull at exit point as well. Fields must explicitly appear as parameters at this method @EnsuresNonNull annotation
 
-This error indicates that the annotation violating the following inheritance rule:
+This error indicates that the annotation violates the following inheritance rule:
 ```
 Every method must satisfy all postcondition of its super method.
 ```
@@ -484,12 +485,12 @@ Please see the example below that demonstrates the necessity of this rule.
 class SuperType{
   Object foo;
 
-  @EnsuresNonnull("foo")
+  @EnsuresNonNull("foo")
   void ensures(){
     foo = new Object();
   }
 
-  @RequiresNonnull("foo")
+  @RequiresNonNull("foo")
   String requires(){
     return o.toString();
   }
@@ -516,7 +517,7 @@ Please see the example below where this error will be reported.
 ```java
 class Super {
   Object bar;
-  @EnsuresNonnull("bar")
+  @EnsuresNonNull("bar")
   void ensures(){
     foo = new Object();
   }
@@ -526,7 +527,7 @@ class Child extends Super{
 
   Object foo;
   
-  @EnsuresNonnull("foo") // error: method does not satisfy all its super methods post condition. "bar" must be also mentioned explicitly in the annotation parameter.
+  @EnsuresNonNull("foo") // error: method does not satisfy all its super methods post condition. "bar" must be also mentioned explicitly in the annotation parameter.
   void ensures(){
     foo = new Object();
   }
@@ -551,7 +552,7 @@ class SuperType{
   @Nullable Object nullableFoo;
   @Nullable Object nullableBar;
 
-  @RequiresNonnull("foo")
+  @RequiresNonNull("foo")
   String requires(){
     nullableBar = new Object();
     return nullableBar.toString() + nullableFoo.toString();
@@ -560,7 +561,7 @@ class SuperType{
 
 class Subtype extends Super{
 
-  @RequiresNonnull("foo", "bar")
+  @RequiresNonNull("foo", "bar")
   String requires(){
     return nullableBar.toString() + nullableFoo.toString();
   }
@@ -582,7 +583,7 @@ Please see the example below where this error will be reported.
 class Super {
   Object bar;
 
-  @RequiresNonnull("bar")
+  @RequiresNonNull("bar")
   String Requires(){
     return bar.toString();
   }
@@ -592,7 +593,7 @@ class C extends Super{
 
   Object foo;
   
-  @RequiresNonnull({"foo", "bar"}) // error: Having the preconidton of "foo" in addition to "bar" to be non-null at call site makes this method precondition stricter than it's super method.
+  @RequiresNonNull({"foo", "bar"}) // error: Having the preconidton of "foo" in addition to "bar" to be non-null at call site makes this method precondition stricter than it's super method.
   String Requires(){
     return bar.toString() + foo.toString();
   }
@@ -604,5 +605,5 @@ class C extends Super{
 }
 ```
 
-To fix this error, simply add `bar` as a parameter to `@RequiresNonnull` annotation on `Child.RequiresNonnull` method.
+To fix this error, remove `foo` as a parameter to `@RequiresNonNull` annotation on the `C.Requires` method.
 
