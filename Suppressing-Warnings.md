@@ -43,6 +43,8 @@ When auto-patching (see below), it can be useful to tell NullAway about your `ca
 
 ### Auto Suppressing
 
+(**NOTE:** Error Prone's patching functionality does not work with NullAway in Error Prone versions after 2.25.0, due to NullAway's requirement to pass an `AnnotatedPackages` option; see https://github.com/uber/NullAway/issues/1080.  For now, if you would like to use the functionality below, you will need to use Error Prone 2.25.0 or earlier.)
+
 If you pass the option `-XepOpt:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
 
 You might also wish to add a comment to the suggested suppressions with `--Xep:NullAway:AutoFixSuppressionComment=\"[ some comment ]\"`. This string will be added as `/* some comment */` alongside the `@SuppressWarnings("NullAway")` annotation. Note that, when building with gradle, this string might not contain spaces. We have still found it useful for e.g. linking an issue/task number to a series of suppressions. 
