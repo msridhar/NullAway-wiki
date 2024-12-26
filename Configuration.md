@@ -1,6 +1,6 @@
 ## Command-Line Options
 
-The NullAway checker takes multiple configuration flags, in the format of [Error Prone's Command-Line Flags](http://errorprone.info/docs/flags). It will throw an error immediately upon loading if the `-XepOpt:NullAway:AnnotatedPackages` flag is not specified.
+The NullAway checker takes multiple configuration flags, in the format of [Error Prone's Command-Line Flags](http://errorprone.info/docs/flags). Before version 0.12.3, NullAway throws an error immediately upon loading if the `-XepOpt:NullAway:AnnotatedPackages` flag is not specified.  In versions 0.12.3 and after, NullAway requires exactly one of either the `-XepOpt:NullAway:AnnotatedPackages` flag or the `-XepOpt:NullAway:OnlyNullMarked` flag (see below).
 
 The following flags are currently supported; each of them can take multiple values as a comma separated list:
 
@@ -11,6 +11,14 @@ The following flags are currently supported; each of them can take multiple valu
 The list of packages that should be considered properly annotated according to the NullAway convention (every possibly null parameter / return / field annotated `@Nullable`).  E.g., `-XepOpt:NullAway:AnnotatedPackages=com.foo,org.bar`.
 
 This option supports [restricted regexp syntax](#restricted-regexp-package-patterns).
+
+### Only `@NullMarked` (Version 0.12.3 and after)
+
+  - `-XepOpt:NullAway:OnlyNullMarked=true`
+
+This option indicates that the `AnnotatedPackages` flag has been deliberately omitted, and that NullAway can proceed with only treating `@NullMarked` code as annotated, in accordance with the JSpecify specification.  If this option is passed, the `AnnotatedPackages` flag _cannot_ be passed.  Note that even if this flag is omitted (and `AnnotatedPackages` is passed), any `@NullMarked` code will still be treated as annotated.
+
+As JSpecify annotations become more widely adopted, eventually NullAway may remove this flag as it may become unnecessary.
 
 ### Unannotated Sub-packages
 
