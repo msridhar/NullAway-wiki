@@ -36,7 +36,7 @@ public class NullnessChecker {
 }
 ```
 
-For now, the `@Contract` annotations are trusted, not checked.  NullAway will warn if it sees a call to a method with a `@Contract` annotation it recognizes as invalid. 
+By default, the `@Contract` annotations are trusted, not checked.  To enable checking of `@Contract` annotations pass the option `-XepOpt:NullAway:CheckContracts` ([docs](https://github.com/uber/NullAway/wiki/Configuration#contract-checking)). NullAway will warn if it sees a `@Contract` annotation whose argument cannot be parsed. 
 
 Not all possible clauses of `@Contract` annotations are fully parsed or supported by NullAway.  E.g., `@Contract("null, false -> fail; !null, true -> fail")` will be ignored, since NullAway cannot generally reason about the runtime truth value of the second argument.  Also, NullAway currently cannot infer parameter nullness information at a call site based on the nullness of the return; see https://github.com/uber/NullAway/issues/1121 for examples.
 
