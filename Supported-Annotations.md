@@ -16,6 +16,8 @@ Finally, while we strongly recommend the use of standard nullability annotations
 
 Any annotation whose simple (un-qualified) name is `@Initializer` is treated as marking a method as an initializer (see [here](https://github.com/uber/NullAway/wiki/Error-Messages#initializer-method-does-not-guarantee-nonnull-field-is-initialized--nonnull-field--not-initialized) for more information on initialization checking).  We also support JUnit's `@Before` and `@BeforeClass` for marking initializers.
 
+You can use any `@MonotonicNonNull` annotation to mark a field that, one it becomes non-null, never becomes null again.  This can help NullAway reason about the non-nullness of such fields in asynchronous callbacks.  See [the Javadoc](https://github.com/uber/NullAway/blob/0888040e2fecfeb419a031b1aaf03c4d1812911a/annotations/src/main/java/com/uber/nullaway/annotations/MonotonicNonNull.java#L8-L26) for an example, and also https://github.com/uber/NullAway/issues/1148.
+
 ### Contracts
 
 NullAway has partial support for [JetBrains `@Contract` annotations](https://www.jetbrains.com/help/idea/contract-annotations.html).  Some examples:
