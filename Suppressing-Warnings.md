@@ -43,7 +43,7 @@ When auto-patching (see below), it can be useful to tell NullAway about your `ca
 
 ### Auto Suppressing
 
-(**NOTE:** Error Prone's patching functionality does not work with NullAway in Error Prone versions after 2.25.0, due to NullAway's requirement to pass an `AnnotatedPackages` option; see https://github.com/uber/NullAway/issues/1080.  For now, if you would like to use the functionality below, you will need to use Error Prone 2.25.0 or earlier.)
+(**NOTE:** Error Prone's patching functionality did not work with NullAway in Error Prone versions after 2.25.0 and before 2.37.0, due to NullAway's requirement to pass an `AnnotatedPackages` option; see https://github.com/uber/NullAway/issues/1080.  If you would like to use the functionality below, you need to use Error Prone 2.37.0 or later (or, 2.25.0 or earlier).)
 
 If you pass the option `-XepOpt:NullAway:SuggestSuppressions=true` to NullAway, it will use Error Prone's suggested fix functionality to suggest suppressing any warning that it finds.  In combination with Error Prone's [patching functionality](http://errorprone.info/docs/patching) you can use this feature to auto-suppress all existing warnings in a code base.
 
