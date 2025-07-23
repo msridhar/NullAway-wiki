@@ -198,6 +198,13 @@ NullAway currently has temporary special support for reasoning about callbacks p
 
 NullAway 0.12.0 changes the logic for how type-use annotations are interpreted to be consistent with the [JSpecify specification](https://jspecify.dev).  See [[JSpecify Support]] for more details.  Setting the `LegacyAnnotationLocations` flag re-enables NullAway's previous logic for interpreting these annotations, to ease migration.  We expect to remove this flag in a future NullAway release.
 
+### Suppression Name Aliases (Version 0.12.8 and after)
+
+  - `-XepOpt:NullAway:SuppressionNameAliases=...`
+
+A list of names to suppress NullAway using a `@SuppressWarnings` annotation, similar to `@SuppressWarnings("NullAway")`.
+This is useful when other warnings are already suppressed in the codebase and NullAway should be suppressed as well, such as with JetBrains' [`DataFlowIssue`](https://www.jetbrains.com/help/inspectopedia/DataFlowIssue.html) inspection.
+
 ### Restricted Regexp Package Patterns
 
 A few options, marked above, support a restricted regular expression syntax to specify the package names they cover. The main difference between our syntax and standard Java regular expressions, is that the `.` character is interpreted as a literal dot, not as "any character", as dots are part of the standard package name syntax and treating them literally favors the common case.
