@@ -198,6 +198,18 @@ NullAway currently has temporary special support for reasoning about callbacks p
 
 NullAway 0.12.0 changes the logic for how type-use annotations are interpreted to be consistent with the [JSpecify specification](https://jspecify.dev).  See [[JSpecify Support]] for more details.  Setting the `LegacyAnnotationLocations` flag re-enables NullAway's previous logic for interpreting these annotations, to ease migration.  We expect to remove this flag in a future NullAway release.
 
+### JSpecify mode
+
+  - `-XepOpt:NullAway:JSpecifyMode=...`
+
+Enables experimental support for fuller JSpecify checking. See [[JSpecify Support]] for more details.
+
+### Warn on Generic Inference Failures
+
+  - `-XepOpt:NullAway:WarnOnGenericInferenceFailure=...`
+
+Within JSpecify mode, this flag enables NullAway warnings when inference fails for a generic method call.  This may help diagnose the root cause of certain failures or bugs in NullAway's JSpecify support.
+
 ### Suppression Name Aliases (Version 0.12.8 and after)
 
   - `-XepOpt:NullAway:SuppressionNameAliases=...`
