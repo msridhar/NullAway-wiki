@@ -1,8 +1,8 @@
 [JSpecify](https://jspecify.dev) is an effort to standardize annotations for Java static analysis, and [JSpecify 1.0](https://jspecify.dev/blog/release-1.0.0/) includes nullability annotations.  Out of the box, NullAway supports JSpecify annotations in its standard mode of checking.  If you are a current NullAway user, you should just be able to swap in JSpecify annotations for whatever nullability annotations you were using before, and you should not get any new NullAway errors.  If you see problems, please report an issue.
 
-**NOTE:** When building with JSpecify mode enabled, we strongly recommend compiling using the most recent released JDK build (JDK 25.0.0 as of 2025-09-22).  If you cannot build with the latest JDK, but can build using JDK 21, we recommend updating to at least JDK 21.0.8 and then passing the javac flag `-XDaddTypeAnnotationsToSymbol=true` to enable proper support for reading type use annotations from bytecodes; see https://github.com/uber/NullAway/pull/1245.  The `-XDaddTypeAnnotationsToSymbol=true` flag is **not** supported by [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) 21.0.8; you must use an OpenJDK build like those from Temurin or Zulu.
-
 A caveat to the above is that starting with NullAway 0.12.0, NullAway by default requires that JSpecify annotations be written in the correct place on qualified and array types.  So, e.g., if we have a field `String[] x`, to mark `x` itself as `@Nullable`, you must write `String @Nullable [] x` if using JSpecify's `@Nullable` annotation or another type-use `@Nullable` annotation.  And, if you have a varargs argument `foo(Object... args)` and you would like the `args` array itself to be `@Nullable`, you must write `foo(Object @Nullable... args)`.  See [here](https://jspecify.dev/docs/user-guide/#type-use-annotation-syntax) for further details on type-use annotation syntax, and [here](https://github.com/uber/NullAway/pull/1010#issuecomment-2267595218) and [here](https://github.com/uber/NullAway/pull/1025) for the gory details on how NullAway interprets different types of annotations.  This change may lead to NullAway reporting new errors in existing code.  We provide a compatibility flag `-XepOpt:NullAway:LegacyAnnotationLocations` to use NullAway's old logic for interpreting annotations to ease the transition, but we expect to remove this flag in a future release.
+
+## JSpecify Mode
 
 We are also working on adding support for [full JSpecify semantics](https://jspecify.dev/docs/spec/) for these annotations, including annotations on generic types.  You can enable our work-in-progress checking by passing the configuration flag `-XepOpt:NullAway:JSpecifyMode=true` when running NullAway.  This mode is still under development and may report false positive warnings on your code.  Please report these cases and we will address them.  Major outstanding features still to be supported include:
 
@@ -13,6 +13,9 @@ We are also working on adding support for [full JSpecify semantics](https://jspe
 
 Not supporting the above features may lead to false negatives (missed issues).  We are slowly working towards supporting them, and any help from the community is appreciated, from issue reports to pull requests.
 
+## Supported JDK versions
+
+When building with JSpecify mode enabled, we strongly recommend compiling using the most recent released JDK build (JDK 25.0.0 as of 2025-09-22).  If you cannot build with the latest JDK, but can build using JDK 21, we recommend updating to at least JDK 21.0.8 and then passing the javac flag `-XDaddTypeAnnotationsToSymbol=true` to enable proper support for reading type use annotations from bytecodes; see https://github.com/uber/NullAway/pull/1245.  The `-XDaddTypeAnnotationsToSymbol=true` flag is **not** supported by [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) 21.0.8; you must use an OpenJDK build like those from Temurin or Zulu.
 
 ## JSpecify and Guava
 
