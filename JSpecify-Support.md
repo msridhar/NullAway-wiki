@@ -17,7 +17,8 @@ Not supporting the above features may lead to false negatives (missed issues).  
 
 ## Supported JDK versions
 
-When building with JSpecify mode enabled, we strongly recommend compiling using the most recent released JDK build (JDK 25.0.1 as of 2025-10-23).  If you cannot build with the latest JDK, but can build using JDK 21, we recommend updating to at least JDK 21.0.8 and then passing the javac flag `-XDaddTypeAnnotationsToSymbol=true` to enable proper support for reading type use annotations from bytecodes; see https://github.com/uber/NullAway/pull/1245.  The `-XDaddTypeAnnotationsToSymbol=true` flag is **not** supported by [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) 21.0.8; you must use an OpenJDK build like those from Temurin or Zulu.
+When building with JSpecify mode enabled, NullAway (as of version 0.12.11) checks that it is running on a version of `javac` that supports reading type use annotations from bytecodes (see https://github.com/uber/NullAway/pull/1245), which is important for predictable and complete checking behavior.  Specifically, NullAway checks that either (1) the running `javac` is from JDK 22 or higher, or (2) the `-XDaddTypeAnnotationsToSymbol=true` flag has been passed to `javac`.  The `-XDaddTypeAnnotationsToSymbol=true` flag enables support for type use annotations in bytecodes for JDK 21 as of release 21.0.8, and may eventually be ported back to JDK 17.  Note that he `-XDaddTypeAnnotationsToSymbol=true` flag is **not** supported by [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) 21; you must use an OpenJDK build like those from Temurin or Zulu.
+
 
 ## JSpecify and Guava
 
