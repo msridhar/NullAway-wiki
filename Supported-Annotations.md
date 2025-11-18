@@ -90,3 +90,38 @@ class Foo {
 	}
 }
 ```
+
+### `@PureExceptLambda`
+
+When a method is marked as `@PureExceptLambda`, it means that there's no way that it could effect the variables used within a lambda passed to it (no side-effects except those possibly performed by the lambda once invoked), and that the lambda will only be called within that method and not stored for later use. This allows NullAway to preserve nullability information within lambdas passed at call sites.
+Here's an example of a simple adapter pattern using the annotation:
+
+```java
+@FunctionalInterface
+public interface LegacyListener {
+  void onEvent(String payload);
+}
+
+public static class EventAdapter {
+  @PureExceptLambda
+  public void withLegacyListener(String payload, LegacyListener listener) {
+    listener.onEvent(payload);
+  }
+}
+
+public class Service {
+  private @Nullable Database db;  // set elsewhere
+
+  public void process(String input) {
+    if (db == null) {
+      // After this, `db` is known non-null in this branch
+      throw new IllegalStateException("db not initialized");
+    }
+    EventAdapter.withLegacyListener(input, payload -> db.execute(payload));
+  }
+}
+```
+
+With the `@PureExceptLambda` annotation on `withLegacyListener`, NullAway assumes that `withLegacyListener` will not mutate the `db` field, and hence `db` will still be non-null at the call `db.execute(payload)`.
+
+**Note:** `@PureExceptLambda` annotations are trusted and _not_ verified, so use them with care.
