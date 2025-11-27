@@ -19,6 +19,9 @@ Not supporting the above features may lead to false negatives (missed issues).  
 
 When building with JSpecify mode enabled, NullAway (as of version 0.12.11) checks that it is running on a version of `javac` that supports reading type use annotations from bytecodes (see https://github.com/uber/NullAway/pull/1245), which is important for predictable and complete checking behavior.  Specifically, NullAway checks that either (1) the running `javac` is from JDK 22 or higher, or (2) the `-XDaddTypeAnnotationsToSymbol=true` flag has been passed to `javac`.  The `-XDaddTypeAnnotationsToSymbol=true` flag enables support for type use annotations in bytecodes for JDK 21 as of release 21.0.8, and may eventually be ported back to JDK 17.  Note that he `-XDaddTypeAnnotationsToSymbol=true` flag is **not** supported by [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) 21; you must use an OpenJDK build like those from Temurin or Zulu.  We recommend using the latest `javac` version possible when building your code to get all the latest bug fixes; the `--release` flag enables targeting older JDK versions while still using the latest compiler.
 
+## `RequireExplicitNullMarking` Checker
+
+As of version 0.12.13, NullAway includes an `RequireExplicitNullMarking` Error Prone checker (off by default) that checks that every class is explicitly `@NullMarked` or `@NullUnmarked`, via either a class or package annotation.  For those using the [`OnlyNullMarked`](https://github.com/uber/NullAway/wiki/Configuration#only-nullmarked-version-0123-and-after) NullAway setting, this check helps ensure that classes are not inadvertently left as `@NullUnmarked`.  (NullAway currently performs no checks inside `@NullUnmarked` code.)  To use the checker, set it to warning or error level via Error Prone flags / your build system.  
 
 ## JSpecify and Guava
 
