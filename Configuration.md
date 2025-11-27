@@ -20,6 +20,8 @@ This option indicates that the `AnnotatedPackages` flag has been deliberately om
 
 As JSpecify annotations become more widely adopted, eventually NullAway may remove this flag as it may become unnecessary.
 
+Note also that NullAway currently performs no checks in `@NullUnmarked` code.  To check that code is not inadvertently left as `@NullUnmarked`, you can use the [`RequireExplicitNullMarking` checker](https://github.com/uber/NullAway/wiki/JSpecify-Support#requireexplicitnullmarking-checker).
+
 ### Unannotated Sub-packages
 
   - `-XepOpt:NullAway:UnannotatedSubPackages=...`
