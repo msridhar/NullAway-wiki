@@ -93,7 +93,7 @@ class Foo {
 
 ### `@PureExceptLambda`
 
-When a method is marked as `@PureExceptLambda`, it means that there's no way that it could effect the variables used within a lambda passed to it (no side-effects except those possibly performed by the lambda once invoked), and that the lambda will only be called within that method and not stored for later use. This allows NullAway to preserve nullability information within lambdas passed at call sites.
+(Requires NullAway 0.12.13) When a method is marked as `@PureExceptLambda`, it means that there's no way that it could effect the variables used within a lambda passed to it (no side-effects except those possibly performed by the lambda once invoked), and that the lambda will only be called within that method and not stored for later use. This allows NullAway to preserve nullability information within lambdas passed at call sites.
 Here's an example of a simple adapter pattern using the annotation:
 
 ```java
